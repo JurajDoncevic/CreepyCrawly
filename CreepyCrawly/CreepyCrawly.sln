@@ -5,6 +5,14 @@ VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreepyCrawly", "CreepyCrawly\CreepyCrawly.csproj", "{6E750844-6ECB-40ED-8296-7FC92DB285AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreepyCrawly.LanguageDefinition", "CreepyCrawly.LanguageDefinition\CreepyCrawly.LanguageDefinition.csproj", "{442AB389-ECCE-45CD-91D7-E0558D91F55C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreepyCrawly.LanguageEngine", "CreepyCrawly.LanguageEngine\CreepyCrawly.LanguageEngine.csproj", "{D104D348-3FD5-41B3-A867-75A2ED724851}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreepyCrawly.SeleniumExecutionEngine", "CreepyCrawly.SeleniumExecutionEngine\CreepyCrawly.SeleniumExecutionEngine.csproj", "{CEA89961-78A3-4B12-89EC-9AC761DD8AB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreepyCrawly.ExecutionPlanning", "CreepyCrawly.ExecutionPlanning\CreepyCrawly.ExecutionPlanning.csproj", "{4D1AE20D-B1D1-42DB-84FE-A55967152FB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +23,22 @@ Global
 		{6E750844-6ECB-40ED-8296-7FC92DB285AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E750844-6ECB-40ED-8296-7FC92DB285AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E750844-6ECB-40ED-8296-7FC92DB285AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{442AB389-ECCE-45CD-91D7-E0558D91F55C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{442AB389-ECCE-45CD-91D7-E0558D91F55C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{442AB389-ECCE-45CD-91D7-E0558D91F55C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{442AB389-ECCE-45CD-91D7-E0558D91F55C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D104D348-3FD5-41B3-A867-75A2ED724851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D104D348-3FD5-41B3-A867-75A2ED724851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D104D348-3FD5-41B3-A867-75A2ED724851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D104D348-3FD5-41B3-A867-75A2ED724851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEA89961-78A3-4B12-89EC-9AC761DD8AB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEA89961-78A3-4B12-89EC-9AC761DD8AB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEA89961-78A3-4B12-89EC-9AC761DD8AB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEA89961-78A3-4B12-89EC-9AC761DD8AB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D1AE20D-B1D1-42DB-84FE-A55967152FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D1AE20D-B1D1-42DB-84FE-A55967152FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D1AE20D-B1D1-42DB-84FE-A55967152FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D1AE20D-B1D1-42DB-84FE-A55967152FB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
