@@ -42,7 +42,7 @@ namespace CreepyCrawly.ExecutionPlanning
                                                                          );
                     commands.Add(waitLoadCommand);
                 }
-                else if (ctx_command.GetText().StartsWith("WAIT"))
+                else if (ctx_command.GetText().StartsWith("WAIT"))//WAIT and WAIT_LOAD should not be moved as one is the others' string prefix - I should fix this
                 {
                     Wait_commandContext wait = ((Simple_commandContext)ctx_command.Payload).wait_command();
                     WaitCommand waitCommand = new WaitCommand(Convert.ToInt32(wait.wait_amount().POSITIVE_INTEGER().GetText()),
@@ -57,6 +57,15 @@ namespace CreepyCrawly.ExecutionPlanning
                                                               SeleniumExecutionMethods.Submit
                                                              );
                     commands.Add(submitCommand);
+                }
+                else if (ctx_command.GetText().StartsWith("SELECT"))
+                {
+                    Select_commandContext select = ((Simple_commandContext)ctx_command.Payload).select_command();
+                    SelectCommand selectCommand = new SelectCommand(select.selector().GetText().Trim('\''),
+                                                                    Convert.ToInt32(select.select_index().GetText()),
+                                                                    SeleniumExecutionMethods.Select
+                                                                   );
+                    commands.Add(selectCommand);
                 }
             }
             return new ExecutionPlan(commands, rootUrl);
