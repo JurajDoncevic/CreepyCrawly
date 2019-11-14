@@ -4,22 +4,23 @@ using System.Text;
 
 namespace CreepyCrawly.ExecutionPlanning.Model
 {
-    public class WaitCommand : ISimpleCommand
+    public class SubmitCommand : ISimpleCommand
     {
         public string Name { get; private set; }
-        public Func<int, object> Execution { get; private set; }
-        public int WaitAmount { get; private set; }
+        public string Selector { get; private set; }
+        public Func<string, object> Execution { get; private set; }
 
-        public WaitCommand(int waitAmount, Func<int, object> execution)
+        public SubmitCommand(string selector, Func<string, object> execution)
         {
-            Name = "Wait";
+            Name = "SUBMIT";
+            Selector = selector;
             Execution = execution;
-            WaitAmount = waitAmount;
         }
+
 
         public object Execute()
         {
-            return Execution.Invoke(WaitAmount);
+            return Execution.Invoke(Selector);
         }
 
         public ExpectedReturnType TryExecute<ExpectedReturnType>()

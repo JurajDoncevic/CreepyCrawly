@@ -22,7 +22,7 @@ namespace CreepyCrawly.LanguageEngine
         }
         public override void SyntaxError([NotNull] IRecognizer recognizer, [Nullable] IToken offendingSymbol, int line, int charPositionInLine, [NotNull] string msg, [Nullable] RecognitionException e)
         {
-            Errors.Add(string.Format("Syntax error in line {0},{1} at {2} with message:{2}", line.ToString(), charPositionInLine.ToString(), offendingSymbol.Text, e.ToString()));
+            Errors.Add(string.Format("Syntax error in line {0},{1} at {2} with message:{2}", line.ToString(), charPositionInLine.ToString(), offendingSymbol.Text, e?.ToString()));
             base.SyntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
         }
     }

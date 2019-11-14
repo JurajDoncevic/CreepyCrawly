@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CreepyCrawly.ExecutionPlanning.Model
 {
-    public class WaitLoadCommand
+    public class WaitLoadCommand : ISimpleCommand
     {
         public string Name { get; private set; }
         public int WaitAmount { get; set; }

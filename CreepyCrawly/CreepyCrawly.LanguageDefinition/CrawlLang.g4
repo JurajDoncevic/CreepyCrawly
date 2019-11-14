@@ -12,6 +12,7 @@ ON_KEYWORD              :   'ON';
 ROOT_KEYWORD            :   'ROOT';
 DO_KEYWORD              :   'DO';
 FOREACH_KEYWORD         :   'FOREACH';
+SUBMIT_KEYWORD			:	'SUBMIT';
 
 TEXT             :   '\''(.)+?'\'';
 POSITIVE_INTEGER :   ([1-9]+[0-9]*|[0]);
@@ -63,10 +64,13 @@ select_command  :   SELECT_KEYWORD selector LANGLE select_index RANGLE SEMICOL
 extract_script_command  :   EXTRACT_SCRIPT_KEYWORD selector SEMICOL
                         ;
 
+submit_command	: SUBMIT_KEYWORD selector SEMICOL
+				;
+
 foreach_command :   FOREACH_KEYWORD selector command_block
                 ;
 
-simple_command  :   (click_command|wait_command|extract_command|input_command|wait_load_command|select_command)
+simple_command  :   (click_command|wait_command|extract_command|input_command|wait_load_command|select_command|submit_command)
                 ;
 
 complex_command :   (foreach_command)
