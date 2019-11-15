@@ -7,8 +7,11 @@ using OpenQA.Selenium.Support.UI;
 
 namespace CreepyCrawly.SeleniumExecutionEngine
 {
+    
     public class SeleniumExecutionMethods
     {
+        private static Stack<string> WindowContextStack = new Stack<string>();
+
         public static object Click(string selector)
         {
             var element = SeleniumExecutionEngine.Driver.FindElementByCssSelector(selector);
@@ -55,6 +58,19 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         }
         public static object ExtractScript(string selector)
         {
+            return null;
+        }
+        public static object ForEachHead(string selector)
+        {
+            WindowContextStack.Push(SeleniumExecutionEngine.Driver.CurrentWindowHandle);
+            SeleniumExecutionEngine.OpenNewDuplicateTab();
+            return null;
+        }
+        public static object ForEachTail()
+        {
+            string stackedTab = WindowContextStack.Pop();
+            SeleniumExecutionEngine.CloseCurrentTab();
+            SeleniumExecutionEngine.SwitchToTabWithHandle(stackedTab);
             return null;
         }
     }

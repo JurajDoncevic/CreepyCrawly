@@ -6,12 +6,12 @@ namespace CreepyCrawly.ExecutionPlanning.Model
 {
     public class ExecutionPlan
     {
-        public List<ISimpleCommand> SimpleCommands { get; private set; }
+        public List<ICommand> Commands { get; private set; }
         public string OnRootUrl { get; private set; }
 
-        public ExecutionPlan(List<ISimpleCommand> simpleCommands, string onRootUrl)
+        public ExecutionPlan(List<ICommand> commands, string onRootUrl)
         {
-            SimpleCommands = simpleCommands;
+            Commands = commands;
             OnRootUrl = onRootUrl;
         }
     }

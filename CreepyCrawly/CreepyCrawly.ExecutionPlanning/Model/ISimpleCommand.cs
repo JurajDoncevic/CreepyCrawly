@@ -2,11 +2,8 @@
 
 namespace CreepyCrawly.ExecutionPlanning.Model
 {
-    public interface ISimpleCommand
+    public interface ISimpleCommand : ICommand
     { 
         string Name { get; }
-
-        object Execute();
-        ExpectedReturnType TryExecute<ExpectedReturnType>();
     }
 }

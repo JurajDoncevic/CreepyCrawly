@@ -12,7 +12,7 @@ namespace CreepyCrawly.ExecutionPlanning.Model
 
         public WaitCommand(int waitAmount, Func<int, object> execution)
         {
-            Name = "Wait";
+            Name = "WAIT";
             Execution = execution;
             WaitAmount = waitAmount;
         }
