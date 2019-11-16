@@ -12,23 +12,30 @@ namespace CreepyCrawly.ExecutionPlanning.Model
         public string Selector { get; private set; }
         public Func<string, object> ExecutionHead { get; set; }
         public Func<object> ExecutionTail { get; set; }
+        public Func<object> ExecutionIterator { get; set; }
 
-        public ForEachCommand(List<ICommand> commands, string selector, Func<string, object> executionHead, Func<object> executionTail)
+        public ForEachCommand(List<ICommand> commands, string selector, Func<string, object> executionHead, Func<object> executionIterator, Func<object> executionTail)
         {
             Name = "FOREACH";
             Commands = commands;
             Selector = selector;
             ExecutionHead = executionHead;
             ExecutionTail = executionTail;
+            ExecutionIterator = executionIterator;
         }
 
         public object Execute()
         {
-            ExecutionHead.Invoke(Selector);
-            var result = ExecuteBlock();
-            ExecutionTail.Invoke();
+            List<object> results = new List<object>();
+            ExecutionHead(Selector);
+            while(ExecutionIterator.Invoke() != null)
+            {
+                results.Add(ExecuteBlock());
+            }
 
-            return result;
+            ExecutionTail();
+
+            return results;
         }
 
         public ExpectedReturnType TryExecute<ExpectedReturnType>()

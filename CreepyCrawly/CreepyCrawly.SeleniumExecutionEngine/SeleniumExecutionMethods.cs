@@ -11,6 +11,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
     public class SeleniumExecutionMethods
     {
         private static Stack<string> WindowContextStack = new Stack<string>();
+        private static Stack<Queue<IWebElement>> IterationContextStack = new Stack<Queue<IWebElement>>();
 
         public static object Click(string selector)
         {
@@ -42,6 +43,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public static object Wait(int waitAmount)
         {
             System.Threading.Thread.Sleep(waitAmount);
+            Console.WriteLine("Waited:{0}", waitAmount.ToString());
             return null;
         }
         public static object WaitLoad(string selector, int waitAmount)
@@ -53,8 +55,9 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public static string Extract(string selector)
         {
             var element = SeleniumExecutionEngine.Driver.FindElementByCssSelector(selector);
-            var attr = element.GetAttribute("href");
-            return attr;
+            var text = element.Text;
+            Console.WriteLine("EXTRACTED: " + text);
+            return text;
         }
         public static object ExtractScript(string selector)
         {
@@ -64,10 +67,30 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             WindowContextStack.Push(SeleniumExecutionEngine.Driver.CurrentWindowHandle);
             SeleniumExecutionEngine.OpenNewDuplicateTab();
+            var elements = SeleniumExecutionEngine.Driver.FindElementsByCssSelector(selector);
+            IterationContextStack.Push(new Queue<IWebElement>(elements));
             return null;
+        }
+        public static object ForEachClickIterator()
+        {
+            Queue<IWebElement> webElements = IterationContextStack.Pop();
+            var elementToClick = webElements.Dequeue();
+            IterationContextStack.Push(webElements);
+            if (elementToClick != null)
+            {
+                elementToClick.Click();
+                Console.WriteLine("Clicked " + elementToClick.Text);
+                return 1;
+            }
+            else
+            {
+                return null;
+            }
+            
         }
         public static object ForEachTail()
         {
+            IterationContextStack.Pop();
             string stackedTab = WindowContextStack.Pop();
             SeleniumExecutionEngine.CloseCurrentTab();
             SeleniumExecutionEngine.SwitchToTabWithHandle(stackedTab);

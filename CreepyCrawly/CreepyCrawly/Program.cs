@@ -8,7 +8,7 @@ namespace CreepyCrawly
     {
         static void Main(string[] args)
         {
-            string scriptText = System.IO.File.ReadAllText("D:/CreepyCrawly/test2.cl");
+            string scriptText = System.IO.File.ReadAllText("C:/Repos/CreepyCrawly/test3.cl");
             CrawlLangEngine crawlLangEngine = new CrawlLangEngine(scriptText);
             if (crawlLangEngine.HasErrors)
             {
@@ -30,9 +30,10 @@ namespace CreepyCrawly
                     Console.WriteLine("An error occurred during script execution with message:\n{0}\nSee the following stacktrace:\n{1}", e.Message, e.StackTrace);
                 }
                 SeleniumExecutionEngine.SeleniumExecutionEngine.StopDriver();
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
+
             }
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
 
         }
     }
