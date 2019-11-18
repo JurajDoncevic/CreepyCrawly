@@ -76,7 +76,7 @@ simple_command  :   (click_command|wait_command|extract_command|input_command|wa
 complex_command :   (foreach_command)
                 ;
 
-command_block   :   DO_KEYWORD LCURLY (simple_command|complex_command)+ RCURLY
+command_block   :   DO_KEYWORD LCURLY (simple_command|complex_command)* RCURLY
                 ;
 
 on_root_command     :    ON_KEYWORD ROOT_KEYWORD www_url command_block
