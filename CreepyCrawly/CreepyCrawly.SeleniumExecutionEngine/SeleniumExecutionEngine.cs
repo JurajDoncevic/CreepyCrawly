@@ -54,7 +54,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             //       .KeyUp(Keys.Alt)
             //       .Build()
             //       .Perform();
-            
+
             Driver.SwitchTo().Window(Driver.WindowHandles[Driver.WindowHandles.Count - 1]);
             Driver.Url = currentUrl;
         }
@@ -65,11 +65,24 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         }
         public static void CloseCurrentTab()
         {
-            Driver.Close();
+            Driver.SwitchTo().Window(Driver.CurrentWindowHandle).Close();
         }
         public static void SwitchToTabWithHandle(string tabHandle)
         {
             Driver.SwitchTo().Window(Driver.WindowHandles[Driver.WindowHandles.IndexOf(tabHandle)]);
+        }
+
+        public static void SwitchToSecondToLastTab()
+        {
+            if (Driver.WindowHandles.Count >= 2)
+            {
+                Driver.SwitchTo().Window(Driver.WindowHandles[Driver.WindowHandles.Count - 2]);
+            }
+        }
+
+        public static void SwitchToLastTab()
+        {
+            Driver.SwitchTo().Window(Driver.WindowHandles[Driver.WindowHandles.Count - 1]);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace CreepyCrawly
     {
         static void Main(string[] args)
         {
-            string scriptText = System.IO.File.ReadAllText("D:/CreepyCrawly/test2.cl");
+            string scriptText = System.IO.File.ReadAllText("D:/CreepyCrawly/test3.cl");
             CrawlLangEngine crawlLangEngine = new CrawlLangEngine(scriptText);
             if (crawlLangEngine.HasErrors)
             {

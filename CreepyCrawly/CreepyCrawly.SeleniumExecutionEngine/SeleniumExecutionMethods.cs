@@ -7,11 +7,11 @@ using OpenQA.Selenium.Support.UI;
 
 namespace CreepyCrawly.SeleniumExecutionEngine
 {
-    
+
     public class SeleniumExecutionMethods
     {
         private static Stack<string> WindowContextStack = new Stack<string>();
-
+        private static Stack<Queue<IWebElement>> ForEachIteratorStack = new Stack<Queue<IWebElement>>();
         public static object Click(string selector)
         {
             var element = SeleniumExecutionEngine.Driver.FindElementByCssSelector(selector);
@@ -53,25 +53,70 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public static string Extract(string selector)
         {
             var element = SeleniumExecutionEngine.Driver.FindElementByCssSelector(selector);
-            var attr = element.GetAttribute("href");
-            return attr;
+            return element.Text;
         }
         public static object ExtractScript(string selector)
         {
             return null;
         }
+
+        #region FOREACH
         public static object ForEachHead(string selector)
         {
             WindowContextStack.Push(SeleniumExecutionEngine.Driver.CurrentWindowHandle);
             SeleniumExecutionEngine.OpenNewDuplicateTab();
+            ForEachIteratorStack.Push(new Queue<IWebElement>(SeleniumExecutionEngine.Driver.FindElementsByCssSelector(selector)));
             return null;
         }
+
+        public static object ForEachIterationBegin()
+        {
+            var elementQueue = ForEachIteratorStack.Pop();
+            IWebElement element = elementQueue.Dequeue();
+            ForEachIteratorStack.Push(elementQueue);
+            
+            if (element != null)
+            {
+                SeleniumExecutionEngine.SwitchToLastTab();
+                System.Threading.Thread.Sleep(500);
+                new Actions(SeleniumExecutionEngine.Driver)
+                    .KeyDown(Keys.LeftControl)
+                    .KeyDown(Keys.LeftShift)
+                    .Click(element)
+                    .KeyUp(Keys.LeftControl)
+                    .KeyUp(Keys.LeftShift)
+                    .Build()
+                    .Perform();
+                               
+
+                SeleniumExecutionEngine.SwitchToLastTab();
+                
+                Console.WriteLine(SeleniumExecutionEngine.Driver.Title);
+                return 1;
+            }
+            else
+            {
+                return null;
+            }
+
+
+
+        }
+
+        public static object ForEachIterationEnd()
+        {
+            SeleniumExecutionEngine.CloseCurrentTab();
+            return null;
+        }
+
         public static object ForEachTail()
         {
             string stackedTab = WindowContextStack.Pop();
+            ForEachIteratorStack.Pop();
             SeleniumExecutionEngine.CloseCurrentTab();
             SeleniumExecutionEngine.SwitchToTabWithHandle(stackedTab);
             return null;
         }
+        #endregion
     }
 }

@@ -66,6 +66,8 @@ namespace CreepyCrawly.ExecutionPlanning
                 ForEachCommand forEachCommand = new ForEachCommand(commands,
                                                                    foreach_.selector().GetText().Trim('\''),
                                                                    SeleniumExecutionMethods.ForEachHead,
+                                                                   SeleniumExecutionMethods.ForEachIterationBegin,
+                                                                   SeleniumExecutionMethods.ForEachIterationEnd,
                                                                    SeleniumExecutionMethods.ForEachTail
                                                                    );
                 return forEachCommand;
@@ -128,6 +130,14 @@ namespace CreepyCrawly.ExecutionPlanning
                                                                 SeleniumExecutionMethods.Select
                                                                 );
                 return selectCommand;
+            }
+            else if (ctx.GetText().StartsWith("EXTRACT"))
+            {
+                Extract_commandContext extract = ctx.extract_command();
+                ExtractCommand extractCommand = new ExtractCommand(extract.selector().GetText().Trim('\''),
+                                                                   SeleniumExecutionMethods.Extract
+                                                                  );
+                return extractCommand;
             }
             else
             {
