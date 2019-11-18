@@ -1,14 +1,18 @@
 ﻿using CreepyCrawly.ExecutionPlanning;
 using CreepyCrawly.LanguageEngine;
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace CreepyCrawly
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-            string scriptText = System.IO.File.ReadAllText("D:/CreepyCrawly/test3.cl");
+            ParseArgs(args);
+            string scriptText = System.IO.File.ReadAllText(ScriptFilePath);
             CrawlLangEngine crawlLangEngine = new CrawlLangEngine(scriptText);
             if (crawlLangEngine.HasErrors)
             {
@@ -20,12 +24,16 @@ namespace CreepyCrawly
                 Console.WriteLine("Script seems OK, starting execution!");
                 try
                 {
+                    List<object> output = new List<object>();
                     ExecutionPlanning.Model.ExecutionPlan plan = SeleniumExecutionPlanFactory.GenerateExecutionPlan(crawlLangEngine.StartingContext);
                     SeleniumExecutionEngine.SeleniumExecutionEngine.StartDriver(plan.OnRootUrl);
-                    plan.Commands.ForEach(cmd => cmd.Execute());
-                    
+                    plan.Commands.ForEach(cmd => output.Add(cmd.Execute()));
+
+                    output.Remove(null);
+
+                    //OUTPUT SOMEWHERE
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine("An error occurred during script execution with message:\n{0}\nSee the following stacktrace:\n{1}", e.Message, e.StackTrace);
                 }
@@ -33,6 +41,16 @@ namespace CreepyCrawly
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
             }
+
+        }
+
+
+        public static void WriteResultsToFile(List<object> results)
+        {
+
+        }
+        public static void WriteResultsToConsole(List<object> results)
+        {
 
         }
     }

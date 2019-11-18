@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CreepyCrawly": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:/CreepyCrawly/test3.cl\""
+    }
+  }
+}
