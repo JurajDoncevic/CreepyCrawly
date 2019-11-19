@@ -91,7 +91,6 @@ namespace CreepyCrawly.SeleniumExecutionEngine
 
                 SeleniumExecutionEngine.SwitchToLastTab();
                 
-                Console.WriteLine(SeleniumExecutionEngine.Driver.Title);
                 return 1;
             }
             else

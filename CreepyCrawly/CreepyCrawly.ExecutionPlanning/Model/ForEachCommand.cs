@@ -36,7 +36,7 @@ namespace CreepyCrawly.ExecutionPlanning.Model
             }
             
             ExecutionTail.Invoke();
-
+            
             return results;
         }
 
