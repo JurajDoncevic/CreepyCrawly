@@ -17,7 +17,6 @@ namespace CreepyCrawly
             Options options = null;
             var parser = new Parser(with => { with.EnableDashDash = true; with.HelpWriter = Console.Out; });
             var result = parser.ParseArguments<Options>(args);
-            //result.WithNotParsed(errs => { DisplayHelp(result, errs); CloseApp(); });
             result.WithParsed<Options>(_ => options = _);
 
             if (options != null)
@@ -63,11 +62,11 @@ namespace CreepyCrawly
                                 outputs.Add(output);
                                 if (options.WriteToStdout)
                                 {
-                                    Console.WriteLine(output);
+                                    CreepyCrawly.Output.OutputSingleton.CreateConsoleOutputter();
                                 }
                                 if(Uri.IsWellFormedUriString(options.ResultFilePath, UriKind.RelativeOrAbsolute))
                                 {
-                                    System.IO.File.AppendAllText(options.ResultFilePath, output + "\n");
+                                    CreepyCrawly.Output.OutputSingleton.CreateFileOutputter(options.ResultFilePath);
                                 }
                             }
 

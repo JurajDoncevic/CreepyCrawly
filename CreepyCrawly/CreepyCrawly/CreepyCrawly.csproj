@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CreepyCrawly.ExecutionPlanning\CreepyCrawly.ExecutionPlanning.csproj" />
     <ProjectReference Include="..\CreepyCrawly.LanguageEngine\CreepyCrawly.LanguageEngine.csproj" />
+    <ProjectReference Include="..\CreepyCrawly.Output\CreepyCrawly.Output.csproj" />
   </ItemGroup>
 
 </Project>
