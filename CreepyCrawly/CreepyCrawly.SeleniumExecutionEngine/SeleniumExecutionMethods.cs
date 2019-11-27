@@ -72,7 +72,12 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public static object ForEachIterationBegin()
         {
             var elementQueue = ForEachIteratorStack.Pop();
-            IWebElement element = elementQueue.Dequeue();
+            IWebElement element = null;
+            if(elementQueue.Count > 0)
+            {
+                element = elementQueue.Dequeue();
+            }
+            
             ForEachIteratorStack.Push(elementQueue);
             
             if (element != null)
@@ -112,6 +117,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             string stackedTab = WindowContextStack.Pop();
             ForEachIteratorStack.Pop();
+            SeleniumExecutionEngine.SwitchToLastTab();
             SeleniumExecutionEngine.CloseCurrentTab();
             SeleniumExecutionEngine.SwitchToTabWithHandle(stackedTab);
             return null;
