@@ -25,7 +25,7 @@ namespace CreepyCrawly.Output
             {
                 using (var bitmap = new Bitmap(stream))
                 {
-                    var filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _FileCount.ToString() + ".png");
+                    var filepath = Path.Combine(BaseDirPath, _FileCount.ToString() + ".png");
                     bitmap.Save(filepath, ImageFormat.Png);
                 }
             }
@@ -37,7 +37,7 @@ namespace CreepyCrawly.Output
             {
                 using (var bitmap = new Bitmap(stream))
                 {
-                    var filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+                    var filepath = Path.Combine(BaseDirPath, fileName);
                     bitmap.Save(filepath, ImageFormat.Png);
                 }
             }

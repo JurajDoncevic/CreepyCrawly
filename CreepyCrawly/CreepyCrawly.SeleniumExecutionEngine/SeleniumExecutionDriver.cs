@@ -81,6 +81,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public void CloseCurrentTab()
         {
             Driver.SwitchTo().Window(Driver.CurrentWindowHandle).Close();
+            SwitchToLastTab();
         }
         public void SwitchToTabWithHandle(string tabHandle)
         {

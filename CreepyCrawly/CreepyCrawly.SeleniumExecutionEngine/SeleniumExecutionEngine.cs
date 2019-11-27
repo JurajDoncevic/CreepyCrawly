@@ -89,13 +89,13 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             string scriptText = string.Format(@"
                                     var c = document.createElement('canvas');
                                     var ctx = c.getContext('2d');
-                                    var img = new Image();
-                                    img.src = document.querySelector('{0}').src;
+                                    var img = document.querySelector('{0}');
                                     c.height=img.naturalHeight;
                                     c.width=img.naturalWidth;
                                     ctx.drawImage(img, 0, 0,img.naturalWidth, img.naturalHeight);
-                                    var base64String = c.toDataURL();
-                                    return base64String;
+                                    var uri = c.toDataURL('image/png'),
+                                    b64 = uri.replace(/^data:image.+;base64,/, '');
+                                    return b64;
                                     ", selector);
             var base64string = _ExecutionDriver.Driver.ExecuteScript(scriptText) as string;
             string[] split = base64string.Split(',');
@@ -119,7 +119,9 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public object ForEachIterationBegin()
         {
             var elementQueue = _ForEachIteratorStack.Pop();
-            IWebElement element = elementQueue.Dequeue();
+            IWebElement element = null;
+            elementQueue.TryDequeue(out element);
+            
             _ForEachIteratorStack.Push(elementQueue);
 
             if (element != null)

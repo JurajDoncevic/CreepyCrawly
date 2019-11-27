@@ -54,7 +54,18 @@ namespace CreepyCrawly
                     using (SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine = new SeleniumExecutionEngine.SeleniumExecutionEngine())
                     {
                         ExecutionPlanning.Model.ExecutionPlan plan = SeleniumExecutionPlanFactory.GenerateExecutionPlan(crawlLangEngine.StartingContext, executionEngine);
-
+                        if (options.WriteToStdout)
+                        {
+                            CreepyCrawly.Output.OutputSingleton.CreateConsoleTextOutputter();
+                        }
+                        if (Uri.IsWellFormedUriString(options.ResultFilePath, UriKind.RelativeOrAbsolute))
+                        {
+                            CreepyCrawly.Output.OutputSingleton.CreateFileTextOutputter(options.ResultFilePath);
+                        }
+                        if (Uri.IsWellFormedUriString(options.ResultFilePath, UriKind.RelativeOrAbsolute))
+                        {
+                            CreepyCrawly.Output.OutputSingleton.CreateImageFileOutputter(options.ImageDirectoryPath);
+                        }
 
                         if (executionEngine.IsEngineOk)
                         {
@@ -64,14 +75,7 @@ namespace CreepyCrawly
                                 if (output != null)
                                 {
                                     outputs.Add(output);
-                                    if (options.WriteToStdout)
-                                    {
-                                        CreepyCrawly.Output.OutputSingleton.CreateConsoleTextOutputter();
-                                    }
-                                    if (Uri.IsWellFormedUriString(options.ResultFilePath, UriKind.RelativeOrAbsolute))
-                                    {
-                                        CreepyCrawly.Output.OutputSingleton.CreateFileTextOutputter(options.ResultFilePath);
-                                    }
+
                                 }
 
                             });
