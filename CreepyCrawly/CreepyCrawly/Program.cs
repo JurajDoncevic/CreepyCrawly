@@ -2,7 +2,6 @@
 using CommandLine.Text;
 using CreepyCrawly.ExecutionPlanning;
 using CreepyCrawly.LanguageEngine;
-using CreepyCrawly.SeleniumExecutionEngine;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -52,9 +51,8 @@ namespace CreepyCrawly
                 {
                     List<object> outputs = new List<object>();
                     ExecutionPlanning.Model.ExecutionPlan plan = SeleniumExecutionPlanFactory.GenerateExecutionPlan(crawlLangEngine.StartingContext);
-                    SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine = new SeleniumExecutionEngine.SeleniumExecutionEngine(plan.OnRootUrl);
-
-                    if (SeleniumExecutionEngine.SeleniumExecutionDriver.IsDriverRunning)
+                    SeleniumExecutionEngine.SeleniumExecutionEngine.StartDriver(plan.OnRootUrl);
+                    if (SeleniumExecutionEngine.SeleniumExecutionEngine.DriverRunning)
                     {
                         plan.Commands.ForEach(cmd =>
                         {
@@ -76,7 +74,7 @@ namespace CreepyCrawly
 
 
 
-                        SeleniumExecutionEngine.SeleniumExecutionDriver.StopDriver();
+                        SeleniumExecutionEngine.SeleniumExecutionEngine.StopDriver();
                     }
                     else
                     {

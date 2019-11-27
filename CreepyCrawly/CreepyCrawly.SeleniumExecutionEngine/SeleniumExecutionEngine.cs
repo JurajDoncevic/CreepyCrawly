@@ -1,133 +1,92 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace CreepyCrawly.SeleniumExecutionEngine
 {
-
     public class SeleniumExecutionEngine
     {
-        private Stack<string> _WindowContextStack = new Stack<string>();
-        private Stack<Queue<IWebElement>> _ForEachIteratorStack = new Stack<Queue<IWebElement>>();
-        private SeleniumExecutionDriver _ExecutionDriver;
-        public bool IsEngineOk { get; private set; } = false;
-        public SeleniumExecutionEngine(string rootUrl)
+        public static bool DriverRunning { get; private set; } = false;
+        public static ChromeDriver Driver { get; private set; }
+        public static string CurrentTab { get; private set; }
+        public static void StartDriver(string rootUrl)
         {
-            _ExecutionDriver = new SeleniumExecutionDriver(rootUrl);
-            if (!_ExecutionDriver.IsDriverRunning)
+            string sanitizedRootUrl = rootUrl.StartsWith("http://") || rootUrl.StartsWith("https://") ? rootUrl : "http://" + rootUrl;
+            try
             {
-                _ExecutionDriver.StartDriver(rootUrl);
-                IsEngineOk = true;
+                var service = ChromeDriverService.CreateDefaultService("./");
+                service.HideCommandPromptWindow = true;
+                service.SuppressInitialDiagnosticInformation = true;
+                var options = new ChromeOptions();
+                Driver = new ChromeDriver(service, options);
+                Driver.Manage().Window.Maximize();
+                Driver.Navigate().GoToUrl(sanitizedRootUrl);
+                DriverRunning = true;
+            }
+            catch (Exception e)
+            {
+                DriverRunning = false;
+            }
+
+        }
+
+        public static void StopDriver()
+        {
+            try
+            {
+                if (Driver != null)
+                {
+                    Driver.Quit();
+                    Driver.Dispose();
+                    DriverRunning = false;
+                }
+            }
+            catch (Exception e)
+            {
             }
         }
 
-        public object Click(string selector)
+        public static void OpenNewDuplicateTab()
         {
-            var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
-            element.Click();
-            return null;
+            string currentUrl = Driver.Url;
+            Driver.ExecuteScript("window.open()");
+            //Actions actions = new Actions(Driver);
+            //actions.KeyDown(Keys.Alt)
+            //       .SendKeys("D")
+            //       .SendKeys(Keys.Enter)
+            //       .KeyUp(Keys.Alt)
+            //       .Build()
+            //       .Perform();
+
+            Driver.SwitchTo().Window(Driver.WindowHandles[Driver.WindowHandles.Count - 1]);
+            Driver.Url = currentUrl;
         }
-        public object Submit(string selector)
+        public static void CloseTabWithHandle(string tabHandle)
         {
-            var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
-            element.Submit();
-            return null;
+            Driver.SwitchTo().Window(Driver.WindowHandles[Driver.WindowHandles.IndexOf(tabHandle)]);
+            Driver.Close();
         }
-        public object Input(string selector, string inputValue)
+        public static void CloseCurrentTab()
         {
-            var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
-            element.Clear();
-            element.SendKeys(inputValue);
-            return null;
+            Driver.SwitchTo().Window(Driver.CurrentWindowHandle).Close();
+        }
+        public static void SwitchToTabWithHandle(string tabHandle)
+        {
+            Driver.SwitchTo().Window(Driver.WindowHandles[Driver.WindowHandles.IndexOf(tabHandle)]);
         }
 
-        public object Select(string selector, int optionIndex)
+        public static void SwitchToSecondToLastTab()
         {
-            var element = new SelectElement(_ExecutionDriver.Driver.FindElementByCssSelector(selector));
-            element.SelectByIndex(optionIndex);
-            return null;
-        }
-
-        public object Wait(int waitAmount)
-        {
-            System.Threading.Thread.Sleep(waitAmount);
-            return null;
-        }
-        public object WaitLoad(string selector, int waitAmount)
-        {
-            new WebDriverWait(_ExecutionDriver.Driver, new TimeSpan(0, 0, 0, 0, waitAmount))
-                    .Until(_ => By.CssSelector(selector));
-            return null;
-        }
-        public string Extract(string selector)
-        {
-            var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
-            return element.Text;
-        }
-        public object ExtractScript(string selector)
-        {
-            return null;
-        }
-
-        #region FOREACH
-        public object ForEachHead(string selector)
-        {
-            _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
-            _ExecutionDriver.OpenNewDuplicateTab();
-            _ForEachIteratorStack.Push(new Queue<IWebElement>(_ExecutionDriver.Driver.FindElementsByCssSelector(selector)));
-            return null;
-        }
-
-        public object ForEachIterationBegin()
-        {
-            var elementQueue = _ForEachIteratorStack.Pop();
-            IWebElement element = elementQueue.Dequeue();
-            _ForEachIteratorStack.Push(elementQueue);
-
-            if (element != null)
+            if (Driver.WindowHandles.Count >= 2)
             {
-                _ExecutionDriver.SwitchToLastTab();
-                System.Threading.Thread.Sleep(500);
-                new Actions(_ExecutionDriver.Driver)
-                    .KeyDown(Keys.LeftControl)
-                    .KeyDown(Keys.LeftShift)
-                    .Click(element)
-                    .KeyUp(Keys.LeftControl)
-                    .KeyUp(Keys.LeftShift)
-                    .Build()
-                    .Perform();
-
-
-                _ExecutionDriver.SwitchToLastTab();
-
-                return 1;
+                Driver.SwitchTo().Window(Driver.WindowHandles[Driver.WindowHandles.Count - 2]);
             }
-            else
-            {
-                return null;
-            }
-
-
-
         }
 
-        public object ForEachIterationEnd()
+        public static void SwitchToLastTab()
         {
-            _ExecutionDriver.CloseCurrentTab();
-            return null;
+            Driver.SwitchTo().Window(Driver.WindowHandles[Driver.WindowHandles.Count - 1]);
         }
-
-        public object ForEachTail()
-        {
-            string stackedTab = _WindowContextStack.Pop();
-            _ForEachIteratorStack.Pop();
-            _ExecutionDriver.CloseCurrentTab();
-            _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
-            return null;
-        }
-        #endregion
     }
 }
