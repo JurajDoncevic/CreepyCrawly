@@ -110,11 +110,11 @@ namespace CreepyCrawly.ExecutionPlanning
                                                                       );
                 return waitLoadCommand;
             }
-            else if (ctx.GetText().StartsWith("WAIT"))//WAIT and WAIT_LOAD should not be moved as one is the others' string prefix - I should fix this
+            else if (ctx.GetText().StartsWith("WAIT_MS"))
             {
-                Wait_commandContext wait = ctx.wait_command();
-                WaitCommand waitCommand = new WaitCommand(Convert.ToInt32(wait.wait_amount().POSITIVE_INTEGER().GetText()),
-                                                          executionEngine.Wait
+                Wait_ms_commandContext wait = ctx.wait_ms_command();
+                WaitMsCommand waitCommand = new WaitMsCommand(Convert.ToInt32(wait.wait_amount().POSITIVE_INTEGER().GetText()),
+                                                          executionEngine.WaitMs
                                                           );
                 return waitCommand;
             }
@@ -135,11 +135,19 @@ namespace CreepyCrawly.ExecutionPlanning
                                                                 );
                 return selectCommand;
             }
-            else if (ctx.GetText().StartsWith("EXTRACT"))
+            else if (ctx.GetText().StartsWith("EXTRACT_TEXT"))
             {
-                Extract_commandContext extract = ctx.extract_command();
-                ExtractCommand extractCommand = new ExtractCommand(extract.selector().GetText().Trim('\''),
-                                                                   executionEngine.Extract
+                Extract_text_commandContext extract = ctx.extract_text_command();
+                ExtractTextCommand extractCommand = new ExtractTextCommand(extract.selector().GetText().Trim('\''),
+                                                                   executionEngine.ExtractText
+                                                                  );
+                return extractCommand;
+            }
+            else if (ctx.GetText().StartsWith("EXTRACT_IMAGE"))
+            {
+                Extract_image_commandContext extract = ctx.extract_image_command();
+                ExtractImageCommand extractCommand = new ExtractImageCommand(extract.selector().GetText().Trim('\''),
+                                                                   executionEngine.ExtractImage
                                                                   );
                 return extractCommand;
             }

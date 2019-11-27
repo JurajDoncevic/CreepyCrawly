@@ -67,7 +67,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             return null;
         }
 
-        public object Wait(int waitAmount)
+        public object WaitMs(int waitAmount)
         {
             System.Threading.Thread.Sleep(waitAmount);
             return null;
@@ -78,10 +78,28 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                     .Until(_ => By.CssSelector(selector));
             return null;
         }
-        public string Extract(string selector)
+        public string ExtractText(string selector)
         {
             var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
             return element.Text;
+        }
+        public string ExtractImage(string selector)
+        {
+            //var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
+            string scriptText = string.Format(@"
+                                    var c = document.createElement('canvas');
+                                    var ctx = c.getContext('2d');
+                                    var img = new Image();
+                                    img.src = document.querySelector('{0}').src;
+                                    c.height=img.naturalHeight;
+                                    c.width=img.naturalWidth;
+                                    ctx.drawImage(img, 0, 0,img.naturalWidth, img.naturalHeight);
+                                    var base64String = c.toDataURL();
+                                    return base64String;
+                                    ", selector);
+            var base64string = _ExecutionDriver.Driver.ExecuteScript(scriptText) as string;
+            string[] split = base64string.Split(',');
+            return split[split.Length - 1];
         }
         public object ExtractScript(string selector)
         {

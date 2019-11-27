@@ -5,15 +5,15 @@ using System.Text;
 
 namespace CreepyCrawly.ExecutionPlanning.Model
 {
-    public class ExtractCommand : ISimpleCommand
+    class ExtractImageCommand : ISimpleCommand
     {
         public string Name { get; private set; }
         public string Selector { get; private set; }
         public Func<string, object> Execution { get; private set; }
 
-        public ExtractCommand(string selector, Func<string, object> execution)
+        public ExtractImageCommand(string selector, Func<string, object> execution)
         {
-            Name = "EXTRACT";
+            Name = "EXTRACT_IMAGE";
             Selector = selector;
             Execution = execution;
         }
@@ -21,7 +21,7 @@ namespace CreepyCrawly.ExecutionPlanning.Model
         public object Execute()
         {
             object result = Execution.Invoke(Selector);
-            OutputSingleton.WriteToTextOutputters(result);
+            OutputSingleton.WriteToImageOutputter(result);
             return result;
         }
 

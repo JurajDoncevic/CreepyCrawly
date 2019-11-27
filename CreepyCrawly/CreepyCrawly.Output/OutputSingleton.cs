@@ -16,7 +16,10 @@ namespace CreepyCrawly.Output
         {
             _Outputters.Add(new ConsoleOutputter());
         }
-
+        public static void CreateImageFileOutputter(string baseDirPath)
+        {
+            _Outputters.Add(new ImageFileOutputter(baseDirPath));
+        }
         public static void WriteToTextOutputters(object output)
         {
             _Outputters.Where(_=>_ is ITextOutputter)
@@ -24,9 +27,11 @@ namespace CreepyCrawly.Output
                        .ForEach(_ => _.WriteOutput(output));
         }
 
-        public static void CreateImageFileOutputter()
+        public static void WriteToImageOutputter(object output)
         {
-
+            _Outputters.Where(_ => _ is ImageFileOutputter)
+                       .ToList()
+                       .ForEach(_ => _.WriteOutput(output));
         }
     }
 }

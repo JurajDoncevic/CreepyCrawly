@@ -1,6 +1,6 @@
 ON ROOT 'http://google.hr' DO {
     INPUT 'input.gLFyf' ('gašpar dončević');
-    WAIT 2000;
+    WAIT_MS 2000;
     SUBMIT 'input.gLFyf';
-    WAIT 5000;
+    WAIT_MS 5000;
 }

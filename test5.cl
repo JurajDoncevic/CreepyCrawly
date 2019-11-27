@@ -7,9 +7,8 @@ ON ROOT 'https://www.fer3.net' DO {
     WAIT_MS 200;
     CLICK 'button.button--primary.button.button--icon.button--icon--login';
     WAIT_MS 200;
-    EXTRACT_TEXT 'a.username';
     FOREACH 'a[data-xf-init="preview-tooltip"]' DO {
         WAIT_LOAD 'body' 500;
-        EXTRACT_TEXT 'a.username';
+        EXTRACT_IMAGE 'a.avatar--m';
     }
 }

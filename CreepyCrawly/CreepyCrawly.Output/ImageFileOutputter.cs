@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace CreepyCrawly.Output
 {
@@ -15,15 +18,29 @@ namespace CreepyCrawly.Output
             _FileCount = 0;
         }
 
-        public void WriteOutput(object output)
+        public void WriteOutput(object base64Image)
         {
             _FileCount++;
-            File.WriteAllBytes(BaseDirPath + "/" + _FileCount + ".png", (byte[])output);
+            using (var stream = new MemoryStream(Convert.FromBase64String(base64Image.ToString())))
+            {
+                using (var bitmap = new Bitmap(stream))
+                {
+                    var filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _FileCount.ToString() + ".png");
+                    bitmap.Save(filepath, ImageFormat.Png);
+                }
+            }
         }
 
-        public void WriteOutputWithName(object output, string fileName)
+        public void WriteOutputWithName(string base64Image, string fileName)
         {
-
+            using (var stream = new MemoryStream(Convert.FromBase64String(base64Image)))
+            {
+                using (var bitmap = new Bitmap(stream))
+                {
+                    var filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+                    bitmap.Save(filepath, ImageFormat.Png);
+                }
+            }
         }
     }
 }

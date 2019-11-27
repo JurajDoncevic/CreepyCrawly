@@ -4,13 +4,13 @@ using System.Text;
 
 namespace CreepyCrawly.ExecutionPlanning.Model
 {
-    public class WaitCommand : ISimpleCommand
+    public class WaitMsCommand : ISimpleCommand
     {
         public string Name { get; private set; }
         public Func<int, object> Execution { get; private set; }
         public int WaitAmount { get; private set; }
 
-        public WaitCommand(int waitAmount, Func<int, object> execution)
+        public WaitMsCommand(int waitAmount, Func<int, object> execution)
         {
             Name = "WAIT";
             Execution = execution;
