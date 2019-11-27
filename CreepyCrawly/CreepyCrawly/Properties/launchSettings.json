@@ -2,7 +2,7 @@
   "profiles": {
     "CreepyCrawly": {
       "commandName": "Project",
-      "commandLineArgs": "\"C:/Repos/CreepyCrawly/test3.cl\" --stdout"
+      "commandLineArgs": "\"C:/Repos/CreepyCrawly/test3.cl\" --stdout --result-file \"./testOutput.txt\""
     }
   }
 }

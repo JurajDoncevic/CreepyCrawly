@@ -11,10 +11,10 @@ namespace CreepyCrawly
         [Value(0, MetaName = "<input_file_path>", HelpText = "Input CrawlLang script file (.cl).", Required = true)]
         public string InputFilePath { get; set; }
 
-        [Option("stdout", Default = false, HelpText = "Write results to STDOUT.", Required = false, SetName = "output_stdout")]
+        [Option("stdout", Default = false, HelpText = "Write results to STDOUT.", Required = false, SetName = "output")]
         public bool WriteToStdout { get; set; }
 
-        [Option('r', "result-file", HelpText = "Write results to a text file at given path.", Required = false, SetName = "output_file")]
+        [Option('r', "result-file", HelpText = "Write results to a text file at given path.", Required = false, SetName = "output")]
         public string ResultFilePath { get; set; }
 
         [Option("engine", Default = "selenium", Required = false)]

@@ -66,11 +66,11 @@ namespace CreepyCrawly
                                     outputs.Add(output);
                                     if (options.WriteToStdout)
                                     {
-                                        CreepyCrawly.Output.OutputSingleton.CreateConsoleOutputter();
+                                        CreepyCrawly.Output.OutputSingleton.CreateConsoleTextOutputter();
                                     }
                                     if (Uri.IsWellFormedUriString(options.ResultFilePath, UriKind.RelativeOrAbsolute))
                                     {
-                                        CreepyCrawly.Output.OutputSingleton.CreateFileOutputter(options.ResultFilePath);
+                                        CreepyCrawly.Output.OutputSingleton.CreateFileTextOutputter(options.ResultFilePath);
                                     }
                                 }
 

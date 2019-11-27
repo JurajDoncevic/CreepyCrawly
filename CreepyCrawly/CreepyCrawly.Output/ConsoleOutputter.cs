@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CreepyCrawly.Output
 {
-    class ConsoleOutputter : IOutputter
+    class ConsoleOutputter : ITextOutputter
     {
         public ConsoleOutputter()
         {

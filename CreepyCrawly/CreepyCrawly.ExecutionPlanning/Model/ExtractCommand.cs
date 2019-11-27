@@ -21,7 +21,7 @@ namespace CreepyCrawly.ExecutionPlanning.Model
         public object Execute()
         {
             object result = Execution.Invoke(Selector);
-            OutputSingleton.WriteOutputToAllOutputters(result);
+            OutputSingleton.WriteToTextOutputters(result);
             return result;
         }
 
