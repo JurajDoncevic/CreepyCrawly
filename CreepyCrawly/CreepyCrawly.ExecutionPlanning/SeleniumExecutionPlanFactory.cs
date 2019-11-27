@@ -10,16 +10,20 @@ namespace CreepyCrawly.ExecutionPlanning
 {
     public class SeleniumExecutionPlanFactory
     {
-        public static ExecutionPlan GenerateExecutionPlan(ProgContext context)
+        public static ExecutionPlan GenerateExecutionPlan(ProgContext context, SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine)
         {
             List<ICommand> commands = new List<ICommand>();
             string rootUrl = context.on_root_command().www_url().TEXT().GetText().Trim('\'');
+
+            ICommand rootCommand = new OnRootCommand(rootUrl, executionEngine.OnRoot);
+            commands.Add(rootCommand);
             var commandContexts = context.on_root_command().command_block().children;
+
             foreach (var commandCtx in commandContexts)
             {
                 if(commandCtx.GetType() == typeof(Simple_commandContext))
                 {
-                    ISimpleCommand simpleCommand = GetSimpleCommand((Simple_commandContext)commandCtx);
+                    ISimpleCommand simpleCommand = GetSimpleCommand((Simple_commandContext)commandCtx, executionEngine);
                     if(simpleCommand != null)
                     {
                         commands.Add(simpleCommand);
@@ -27,7 +31,7 @@ namespace CreepyCrawly.ExecutionPlanning
                 }
                 else if(commandCtx.GetType() == typeof(Complex_commandContext))
                 {
-                    IComplexCommand complexCommand = GetComplexCommand((Complex_commandContext)commandCtx);
+                    IComplexCommand complexCommand = GetComplexCommand((Complex_commandContext)commandCtx, executionEngine);
                     if (complexCommand != null)
                     {
                         commands.Add(complexCommand);
@@ -37,7 +41,7 @@ namespace CreepyCrawly.ExecutionPlanning
             return new ExecutionPlan(commands, rootUrl);
         }
 
-        private static IComplexCommand GetComplexCommand(Complex_commandContext ctx)
+        private static IComplexCommand GetComplexCommand(Complex_commandContext ctx, SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine)
         {
             List<ICommand> commands = new List<ICommand>();
             if (ctx.GetText().StartsWith("FOREACH"))
@@ -48,7 +52,7 @@ namespace CreepyCrawly.ExecutionPlanning
                 {
                     if (commandCtx.GetType() == typeof(Simple_commandContext))
                     {
-                        ISimpleCommand simpleCommand = GetSimpleCommand((Simple_commandContext)commandCtx);
+                        ISimpleCommand simpleCommand = GetSimpleCommand((Simple_commandContext)commandCtx, executionEngine);
                         if (simpleCommand != null)
                         {
                             commands.Add(simpleCommand);
@@ -56,7 +60,7 @@ namespace CreepyCrawly.ExecutionPlanning
                     }
                     else if (commandCtx.GetType() == typeof(Complex_commandContext))
                     {
-                        IComplexCommand complexCommand = GetComplexCommand((Complex_commandContext)commandCtx);
+                        IComplexCommand complexCommand = GetComplexCommand((Complex_commandContext)commandCtx, executionEngine);
                         if (complexCommand != null)
                         {
                             commands.Add(complexCommand);
@@ -65,10 +69,10 @@ namespace CreepyCrawly.ExecutionPlanning
                 }
                 ForEachCommand forEachCommand = new ForEachCommand(commands,
                                                                    foreach_.selector().GetText().Trim('\''),
-                                                                   SeleniumExecutionEngine.SeleniumExecutionEngine.ForEachHead,
-                                                                   SeleniumExecutionEngine.SeleniumExecutionEngine.ForEachIterationBegin,
-                                                                   SeleniumExecutionEngine.SeleniumExecutionEngine.ForEachIterationEnd,
-                                                                   SeleniumExecutionEngine.SeleniumExecutionEngine.ForEachTail
+                                                                   executionEngine.ForEachHead,
+                                                                   executionEngine.ForEachIterationBegin,
+                                                                   executionEngine.ForEachIterationEnd,
+                                                                   executionEngine.ForEachTail
                                                                    );
                 return forEachCommand;
             }
@@ -78,14 +82,14 @@ namespace CreepyCrawly.ExecutionPlanning
             }
         }
 
-        private static ISimpleCommand GetSimpleCommand(Simple_commandContext ctx)
+        private static ISimpleCommand GetSimpleCommand(Simple_commandContext ctx, SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine)
         {
             if (ctx.GetText().StartsWith("INPUT"))
             {
                 Input_commandContext input = ctx.input_command();
                 InputCommand inputCommand = new InputCommand(input.selector().TEXT().GetText().Trim('\''),
                                                              input.text_value().TEXT().GetText().Trim('\''),
-                                                             SeleniumExecutionEngine.SeleniumExecutionEngine.Input
+                                                             executionEngine.Input
                                                             );
                 return inputCommand;
             }
@@ -93,7 +97,7 @@ namespace CreepyCrawly.ExecutionPlanning
             {
                 Click_commandContext click = ctx.click_command();
                 ClickCommand clickCommand = new ClickCommand(click.selector().TEXT().GetText().Trim('\''),
-                                                             SeleniumExecutionEngine.SeleniumExecutionEngine.Click
+                                                             executionEngine.Click
                                                              );
                 return clickCommand;
             }
@@ -102,7 +106,7 @@ namespace CreepyCrawly.ExecutionPlanning
                 Wait_load_commandContext waitLoad = ctx.wait_load_command();
                 WaitLoadCommand waitLoadCommand = new WaitLoadCommand(waitLoad.selector().GetText().Trim('\''),
                                                                       Convert.ToInt32(waitLoad.wait_amount().POSITIVE_INTEGER().GetText()),
-                                                                      SeleniumExecutionEngine.SeleniumExecutionEngine.WaitLoad
+                                                                      executionEngine.WaitLoad
                                                                       );
                 return waitLoadCommand;
             }
@@ -110,7 +114,7 @@ namespace CreepyCrawly.ExecutionPlanning
             {
                 Wait_commandContext wait = ctx.wait_command();
                 WaitCommand waitCommand = new WaitCommand(Convert.ToInt32(wait.wait_amount().POSITIVE_INTEGER().GetText()),
-                                                          SeleniumExecutionEngine.SeleniumExecutionEngine.Wait
+                                                          executionEngine.Wait
                                                           );
                 return waitCommand;
             }
@@ -118,7 +122,7 @@ namespace CreepyCrawly.ExecutionPlanning
             {
                 Submit_commandContext submit = ctx.submit_command();
                 SubmitCommand submitCommand = new SubmitCommand(submit.selector().GetText().Trim('\''),
-                                                                SeleniumExecutionEngine.SeleniumExecutionEngine.Submit
+                                                                executionEngine.Submit
                                                                 );
                 return submitCommand;
             }
@@ -127,7 +131,7 @@ namespace CreepyCrawly.ExecutionPlanning
                 Select_commandContext select = ctx.select_command();
                 SelectCommand selectCommand = new SelectCommand(select.selector().GetText().Trim('\''),
                                                                 Convert.ToInt32(select.select_index().GetText()),
-                                                                SeleniumExecutionEngine.SeleniumExecutionEngine.Select
+                                                                executionEngine.Select
                                                                 );
                 return selectCommand;
             }
@@ -135,7 +139,7 @@ namespace CreepyCrawly.ExecutionPlanning
             {
                 Extract_commandContext extract = ctx.extract_command();
                 ExtractCommand extractCommand = new ExtractCommand(extract.selector().GetText().Trim('\''),
-                                                                   SeleniumExecutionEngine.SeleniumExecutionEngine.Extract
+                                                                   executionEngine.Extract
                                                                   );
                 return extractCommand;
             }

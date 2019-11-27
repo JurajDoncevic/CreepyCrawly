@@ -51,38 +51,36 @@ namespace CreepyCrawly
                 try
                 {
                     List<object> outputs = new List<object>();
-                    ExecutionPlanning.Model.ExecutionPlan plan = SeleniumExecutionPlanFactory.GenerateExecutionPlan(crawlLangEngine.StartingContext);
-                    SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine = new SeleniumExecutionEngine.SeleniumExecutionEngine(plan.OnRootUrl);
-
-                    if (SeleniumExecutionEngine.SeleniumExecutionDriver.IsDriverRunning)
+                    using (SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine = new SeleniumExecutionEngine.SeleniumExecutionEngine())
                     {
-                        plan.Commands.ForEach(cmd =>
+                        ExecutionPlanning.Model.ExecutionPlan plan = SeleniumExecutionPlanFactory.GenerateExecutionPlan(crawlLangEngine.StartingContext, executionEngine);
+
+
+                        if (executionEngine.IsEngineOk)
                         {
-                            var output = cmd.Execute();
-                            if(output != null)
+                            plan.Commands.ForEach(cmd =>
                             {
-                                outputs.Add(output);
-                                if (options.WriteToStdout)
+                                var output = cmd.Execute();
+                                if (output != null)
                                 {
-                                    CreepyCrawly.Output.OutputSingleton.CreateConsoleOutputter();
+                                    outputs.Add(output);
+                                    if (options.WriteToStdout)
+                                    {
+                                        CreepyCrawly.Output.OutputSingleton.CreateConsoleOutputter();
+                                    }
+                                    if (Uri.IsWellFormedUriString(options.ResultFilePath, UriKind.RelativeOrAbsolute))
+                                    {
+                                        CreepyCrawly.Output.OutputSingleton.CreateFileOutputter(options.ResultFilePath);
+                                    }
                                 }
-                                if(Uri.IsWellFormedUriString(options.ResultFilePath, UriKind.RelativeOrAbsolute))
-                                {
-                                    CreepyCrawly.Output.OutputSingleton.CreateFileOutputter(options.ResultFilePath);
-                                }
-                            }
 
-                        });
-
-
-
-                        SeleniumExecutionEngine.SeleniumExecutionDriver.StopDriver();
+                            });
+                        }
+                        else
+                        {
+                            Console.Error.WriteLine("Could not start the execution engine :(\nMaybe you are missing an appropriate chromedriver in the app root directory.");
+                        }
                     }
-                    else
-                    {
-                        Console.Error.WriteLine("Could not start the execution engine :(\nMaybe you are missing an appropriate chromedriver in the app root directory.");
-                    }
-
                 }
                 catch (Exception e)
                 {

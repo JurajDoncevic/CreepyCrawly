@@ -26,7 +26,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             string sanitizedRootUrl = rootUrl.StartsWith("http://") || rootUrl.StartsWith("https://") ? rootUrl : "http://" + rootUrl;
             try
             {
-                var service = ChromeDriverService.CreateDefaultService("./");
+                var service = ChromeDriverService.CreateDefaultService(DriverPath);
                 service.HideCommandPromptWindow = true;
                 service.SuppressInitialDiagnosticInformation = true;
                 var options = new ChromeOptions();

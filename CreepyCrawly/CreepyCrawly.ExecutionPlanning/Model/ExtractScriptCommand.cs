@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CreepyCrawly.Output;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,7 +20,9 @@ namespace CreepyCrawly.ExecutionPlanning.Model
 
         public object Execute()
         {
-            return Execution.Invoke(Selector);
+            object result = Execution.Invoke(Selector);
+            OutputSingleton.WriteOutputToAllOutputters(result);
+            return result;
         }
 
         public ExpectedReturnType TryExecute<ExpectedReturnType>()

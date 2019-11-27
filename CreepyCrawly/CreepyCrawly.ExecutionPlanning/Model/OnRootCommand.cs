@@ -1,28 +1,25 @@
-﻿using CreepyCrawly.Output;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CreepyCrawly.ExecutionPlanning.Model
 {
-    public class ExtractCommand : ISimpleCommand
+    public class OnRootCommand : ISimpleCommand
     {
         public string Name { get; private set; }
-        public string Selector { get; private set; }
+        public string WwwUrl { get; private set; }
         public Func<string, object> Execution { get; private set; }
 
-        public ExtractCommand(string selector, Func<string, object> execution)
+        public OnRootCommand(string wwwUrl, Func<string, object> execution)
         {
-            Name = "EXTRACT";
-            Selector = selector;
+            Name = "ON ROOT";
+            WwwUrl = wwwUrl;
             Execution = execution;
         }
 
         public object Execute()
         {
-            object result = Execution.Invoke(Selector);
-            OutputSingleton.WriteOutputToAllOutputters(result);
-            return result;
+            return Execution.Invoke(WwwUrl);
         }
 
         public ExpectedReturnType TryExecute<ExpectedReturnType>()

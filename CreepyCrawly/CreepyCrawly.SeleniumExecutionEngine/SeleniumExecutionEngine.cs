@@ -8,22 +8,38 @@ using OpenQA.Selenium.Support.UI;
 namespace CreepyCrawly.SeleniumExecutionEngine
 {
 
-    public class SeleniumExecutionEngine
+    public class SeleniumExecutionEngine : IDisposable
     {
         private Stack<string> _WindowContextStack = new Stack<string>();
         private Stack<Queue<IWebElement>> _ForEachIteratorStack = new Stack<Queue<IWebElement>>();
         private SeleniumExecutionDriver _ExecutionDriver;
         public bool IsEngineOk { get; private set; } = false;
-        public SeleniumExecutionEngine(string rootUrl)
+
+        public SeleniumExecutionEngine()
         {
-            _ExecutionDriver = new SeleniumExecutionDriver(rootUrl);
+            _ExecutionDriver = new SeleniumExecutionDriver();
             if (!_ExecutionDriver.IsDriverRunning)
             {
-                _ExecutionDriver.StartDriver(rootUrl);
+                _ExecutionDriver.StartDriver("");
                 IsEngineOk = true;
             }
         }
 
+        public void StopEngine()
+        {
+            _ExecutionDriver.StopDriver();
+        }
+
+        public void Dispose()
+        {
+            StopEngine();
+        }
+        #region SIMPLE METHODS
+        public object OnRoot(string wwwUrl)
+        {
+            _ExecutionDriver.Driver.Navigate().GoToUrl(wwwUrl);
+            return null;
+        }
         public object Click(string selector)
         {
             var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
@@ -71,6 +87,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             return null;
         }
+        #endregion
 
         #region FOREACH
         public object ForEachHead(string selector)
