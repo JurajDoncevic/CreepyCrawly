@@ -26,7 +26,7 @@ namespace CreepyCrawly.ExecutionPlanning.Model
                 string[] results = (string[])Execution.Invoke(Selector);
                 foreach (var result in results)
                 {
-                    OutputSingleton.WriteToTextOutputters(result);
+                    OutputSingleton.WriteToImageOutputters(result);
                 }
                 
                 return 1;

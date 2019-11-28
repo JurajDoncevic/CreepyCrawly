@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
@@ -104,7 +105,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                                    "b64List.push(b64);" +
                                    "});" +
                                    "return b64List;";
-            var base64strings = _ExecutionDriver.Driver.ExecuteScript(scriptText) as string[];
+            var base64strings = ((IReadOnlyCollection<object>)_ExecutionDriver.Driver.ExecuteScript(scriptText)).Select(_=>_.ToString()).ToArray();
             return base64strings;
         }
         public string ExtractImage(string selector)
@@ -145,7 +146,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             var elementQueue = _ForEachIteratorStack.Pop();
             IWebElement element = null;
             elementQueue.TryDequeue(out element);
-            
+
             _ForEachIteratorStack.Push(elementQueue);
 
             if (element != null)
