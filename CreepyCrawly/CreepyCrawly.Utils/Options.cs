@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CreepyCrawly
+namespace CreepyCrawly.Utils
 {
     public class Options
     {
@@ -22,6 +22,9 @@ namespace CreepyCrawly
 
         [Option("engine", Default = "selenium", Required = false)]
         public string UseEngine { get; set; }
+
+        [Option("verbose-errors", Default = false, Required = false)]
+        public bool VerboseErrors { get; set; }
 
         [Usage(ApplicationAlias = "CreepyCrawly.exe")]
         public static IEnumerable<Example> Examples

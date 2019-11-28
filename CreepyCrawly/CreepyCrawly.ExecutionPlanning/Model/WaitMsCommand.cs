@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CreepyCrawly.Output;
+using CreepyCrawly.Utils;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,14 +14,22 @@ namespace CreepyCrawly.ExecutionPlanning.Model
 
         public WaitMsCommand(int waitAmount, Func<int, object> execution)
         {
-            Name = "WAIT";
+            Name = "WAIT_MS";
             Execution = execution;
             WaitAmount = waitAmount;
         }
 
         public object Execute()
         {
-            return Execution.Invoke(WaitAmount);
+            try
+            {
+                return Execution.Invoke(WaitAmount);
+            }
+            catch (Exception e)
+            {
+                ErrorHandler.ReportCommandExecutionNonFatalFailed(e, Name);
+                return null;
+            }
         }
 
         public ExpectedReturnType TryExecute<ExpectedReturnType>()

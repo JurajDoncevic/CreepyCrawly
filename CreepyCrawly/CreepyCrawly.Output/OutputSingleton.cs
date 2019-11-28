@@ -27,9 +27,15 @@ namespace CreepyCrawly.Output
                        .ForEach(_ => _.WriteOutput(output));
         }
 
-        public static void WriteToImageOutputter(object output)
+        public static void WriteToImageOutputters(object output)
         {
             _Outputters.Where(_ => _ is ImageFileOutputter)
+                       .ToList()
+                       .ForEach(_ => _.WriteOutput(output));
+        }
+        public static void WriteToConsoleOutputters(object output)
+        {
+            _Outputters.Where(_ => _ is ConsoleOutputter)
                        .ToList()
                        .ForEach(_ => _.WriteOutput(output));
         }

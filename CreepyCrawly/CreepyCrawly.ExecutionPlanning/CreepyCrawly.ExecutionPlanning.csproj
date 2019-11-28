@@ -8,6 +8,7 @@
     <ProjectReference Include="..\CreepyCrawly.LanguageDefinition\CreepyCrawly.LanguageDefinition.csproj" />
     <ProjectReference Include="..\CreepyCrawly.Output\CreepyCrawly.Output.csproj" />
     <ProjectReference Include="..\CreepyCrawly.SeleniumExecutionEngine\CreepyCrawly.SeleniumExecutionEngine.csproj" />
+    <ProjectReference Include="..\CreepyCrawly.Utils\CreepyCrawly.Utils.csproj" />
   </ItemGroup>
 
 </Project>

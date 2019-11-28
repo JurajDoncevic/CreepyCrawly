@@ -3,6 +3,7 @@ using CommandLine.Text;
 using CreepyCrawly.ExecutionPlanning;
 using CreepyCrawly.LanguageEngine;
 using CreepyCrawly.SeleniumExecutionEngine;
+using CreepyCrawly.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,10 +16,8 @@ namespace CreepyCrawly
 
         static void Main(string[] args)
         {
-            Options options = null;
-            var parser = new Parser(with => { with.EnableDashDash = true; with.HelpWriter = Console.Out; });
-            var result = parser.ParseArguments<Options>(args);
-            result.WithParsed<Options>(_ => options = _);
+            InstanceOptions.GenerateOptionsFromArgs(args);
+            Options options = InstanceOptions.Options;
 
             if (options != null)
                 Run(options);

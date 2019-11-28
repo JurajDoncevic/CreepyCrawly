@@ -11,6 +11,8 @@ ON ROOT 'https://www.fer3.net' DO {
     FOREACH_CLICK 'a[data-xf-init="preview-tooltip"]' DO {
         WAIT_FOR 'body' 500;
         EXTRACT_TITLE;
+        EXTRACT_TEXT 'div#some_id';
+        CLICK 'div#id';
         EXTRACT_TEXT 'a.username';
     }
 }
