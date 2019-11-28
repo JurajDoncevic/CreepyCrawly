@@ -8,8 +8,9 @@ ON ROOT 'https://www.fer3.net' DO {
     CLICK 'button.button--primary.button.button--icon.button--icon--login';
     WAIT_MS 200;
     EXTRACT_TEXT 'a.username';
-    FOREACH 'a[data-xf-init="preview-tooltip"]' DO {
-        WAIT_LOAD 'body' 500;
+    FOREACH_CLICK 'a[data-xf-init="preview-tooltip"]' DO {
+        WAIT_FOR 'body' 500;
+        EXTRACT_TITLE;
         EXTRACT_TEXT 'a.username';
     }
 }

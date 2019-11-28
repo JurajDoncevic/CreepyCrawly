@@ -83,6 +83,11 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
             return element.Text;
         }
+        public string ExtractTitle()
+        {
+            var title = _ExecutionDriver.Driver.Title;
+            return title;
+        }
         public string ExtractImage(string selector)
         {
             //var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
@@ -107,8 +112,8 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         }
         #endregion
 
-        #region FOREACH
-        public object ForEachHead(string selector)
+        #region FOREACH CLICK
+        public object ForEachClick_Head(string selector)
         {
             _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
             _ExecutionDriver.OpenNewDuplicateTab();
@@ -116,7 +121,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             return null;
         }
 
-        public object ForEachIterationBegin()
+        public object ForEachClick_IterationBegin()
         {
             var elementQueue = _ForEachIteratorStack.Pop();
             IWebElement element = null;
@@ -127,7 +132,6 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             if (element != null)
             {
                 _ExecutionDriver.SwitchToLastTab();
-                System.Threading.Thread.Sleep(500);
                 new Actions(_ExecutionDriver.Driver)
                     .KeyDown(Keys.LeftControl)
                     .KeyDown(Keys.LeftShift)
@@ -151,13 +155,13 @@ namespace CreepyCrawly.SeleniumExecutionEngine
 
         }
 
-        public object ForEachIterationEnd()
+        public object ForEachClick_IterationEnd()
         {
             _ExecutionDriver.CloseCurrentTab();
             return null;
         }
 
-        public object ForEachTail()
+        public object ForEachClick_Tail()
         {
             string stackedTab = _WindowContextStack.Pop();
             _ForEachIteratorStack.Pop();

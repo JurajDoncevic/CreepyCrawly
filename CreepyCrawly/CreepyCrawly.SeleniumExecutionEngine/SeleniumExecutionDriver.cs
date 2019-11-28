@@ -32,6 +32,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                 var options = new ChromeOptions();
                 Driver = new ChromeDriver(service, options);
                 Driver.Manage().Window.Maximize();
+                Driver.Manage().Window.Minimize();
                 Driver.Navigate().GoToUrl(sanitizedRootUrl);
                 IsDriverRunning = true;
             }

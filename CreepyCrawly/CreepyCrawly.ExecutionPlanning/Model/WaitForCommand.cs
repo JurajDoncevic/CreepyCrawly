@@ -4,16 +4,16 @@ using System.Text;
 
 namespace CreepyCrawly.ExecutionPlanning.Model
 {
-    public class WaitLoadCommand : ISimpleCommand
+    public class WaitForCommand : ISimpleCommand
     {
         public string Name { get; private set; }
         public int WaitAmount { get; set; }
         public string Selector { get; private set; }
         public Func<string, int, object> Execution { get; private set; }
 
-        public WaitLoadCommand(string selector, int waitAmount, Func<string, int, object> execution)
+        public WaitForCommand(string selector, int waitAmount, Func<string, int, object> execution)
         {
-            Name = "WAIT_LOAD";
+            Name = "WAIT_FOR";
             Selector = selector;
             Execution = execution;
             WaitAmount = waitAmount;

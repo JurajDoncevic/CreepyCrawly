@@ -44,10 +44,10 @@ namespace CreepyCrawly.ExecutionPlanning
         private static IComplexCommand GetComplexCommand(Complex_commandContext ctx, SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine)
         {
             List<ICommand> commands = new List<ICommand>();
-            if (ctx.GetText().StartsWith("FOREACH"))
+            if (ctx.GetText().StartsWith("FOREACH_CLICK"))
             {
-                Foreach_commandContext foreach_ = ctx.foreach_command();
-                var commandContexts = foreach_.command_block().children;
+                Foreach_click_commandContext foreach_click = ctx.foreach_click_command();
+                var commandContexts = foreach_click.command_block().children;
                 foreach (var commandCtx in commandContexts)
                 {
                     if (commandCtx.GetType() == typeof(Simple_commandContext))
@@ -67,14 +67,14 @@ namespace CreepyCrawly.ExecutionPlanning
                         }
                     }
                 }
-                ForEachCommand forEachCommand = new ForEachCommand(commands,
-                                                                   foreach_.selector().GetText().Trim('\''),
-                                                                   executionEngine.ForEachHead,
-                                                                   executionEngine.ForEachIterationBegin,
-                                                                   executionEngine.ForEachIterationEnd,
-                                                                   executionEngine.ForEachTail
+                ForEachClickCommand forEachClickCommand = new ForEachClickCommand(commands,
+                                                                   foreach_click.selector().GetText().Trim('\''),
+                                                                   executionEngine.ForEachClick_Head,
+                                                                   executionEngine.ForEachClick_IterationBegin,
+                                                                   executionEngine.ForEachClick_IterationEnd,
+                                                                   executionEngine.ForEachClick_Tail
                                                                    );
-                return forEachCommand;
+                return forEachClickCommand;
             }
             else
             {
@@ -101,10 +101,10 @@ namespace CreepyCrawly.ExecutionPlanning
                                                              );
                 return clickCommand;
             }
-            else if (ctx.GetText().StartsWith("WAIT_LOAD"))
+            else if (ctx.GetText().StartsWith("WAIT_FOR"))
             {
-                Wait_load_commandContext waitLoad = ctx.wait_load_command();
-                WaitLoadCommand waitLoadCommand = new WaitLoadCommand(waitLoad.selector().GetText().Trim('\''),
+                Wait_for_commandContext waitLoad = ctx.wait_for_command();
+                WaitForCommand waitLoadCommand = new WaitForCommand(waitLoad.selector().GetText().Trim('\''),
                                                                       Convert.ToInt32(waitLoad.wait_amount().POSITIVE_INTEGER().GetText()),
                                                                       executionEngine.WaitLoad
                                                                       );
@@ -149,6 +149,12 @@ namespace CreepyCrawly.ExecutionPlanning
                 ExtractImageCommand extractCommand = new ExtractImageCommand(extract.selector().GetText().Trim('\''),
                                                                    executionEngine.ExtractImage
                                                                   );
+                return extractCommand;
+            }
+            else if (ctx.GetText().StartsWith("EXTRACT_TITLE"))
+            {
+                Extract_image_commandContext extract = ctx.extract_image_command();
+                ExtractTitleCommand extractCommand = new ExtractTitleCommand(executionEngine.ExtractTitle);
                 return extractCommand;
             }
             else

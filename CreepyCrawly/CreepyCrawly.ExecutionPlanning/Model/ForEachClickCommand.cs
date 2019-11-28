@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CreepyCrawly.ExecutionPlanning.Model
 {
-    public class ForEachCommand : IComplexCommand
+    public class ForEachClickCommand : IComplexCommand
     {
         public string Name { get; private set; }
         public List<ICommand> Commands { get; private set; }
@@ -14,7 +14,7 @@ namespace CreepyCrawly.ExecutionPlanning.Model
         public Func<object> ExecutionTail { get; set; }
         public Func<object> ExecutionIterationBegin { get; set; }
         public Func<object> ExecutionIterationEnd { get; set; }
-        public ForEachCommand(List<ICommand> commands, string selector, Func<string, object> executionHead, Func<object> executionIterationBegin, Func<object> executionIterationEnd, Func<object> executionTail)
+        public ForEachClickCommand(List<ICommand> commands, string selector, Func<string, object> executionHead, Func<object> executionIterationBegin, Func<object> executionIterationEnd, Func<object> executionTail)
         {
             Name = "FOREACH";
             Commands = commands;
