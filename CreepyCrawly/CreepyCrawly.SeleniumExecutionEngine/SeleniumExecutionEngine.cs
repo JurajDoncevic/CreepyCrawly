@@ -88,6 +88,25 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             var title = _ExecutionDriver.Driver.Title;
             return title;
         }
+
+        public string[] ExtractAllImages(string selector)
+        {
+            string scriptText = "var b64List = [];" +
+                                   "var c = document.createElement('canvas');" +
+                                   "var ctx = c.getContext('2d');" +
+                                   string.Format("var imgs = document.querySelectorAll('{0}');", selector) +
+                                   "imgs.forEach(function(item, index){" +
+                                   "c.height=item.naturalHeight;" +
+                                   "c.width=item.naturalWidth;" +
+                                   "ctx.drawImage(item, 0, 0,item.naturalWidth, item.naturalHeight);" +
+                                   "var uri = c.toDataURL('image/png')," +
+                                   "b64 = uri.replace(/^data:image.+;base64,/, '');" +
+                                   "b64List.push(b64);" +
+                                   "});" +
+                                   "return b64List;";
+            var base64strings = _ExecutionDriver.Driver.ExecuteScript(scriptText) as string[];
+            return base64strings;
+        }
         public string ExtractImage(string selector)
         {
             //var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);

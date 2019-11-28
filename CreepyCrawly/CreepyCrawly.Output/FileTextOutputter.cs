@@ -12,6 +12,19 @@ namespace CreepyCrawly.Output
         public FileTextOutputter(string filePath)
         {
             FilePath = filePath;
+            TryCreateFile();
+        }
+
+        private void TryCreateFile()
+        {
+            try
+            {
+                File.CreateText(FilePath).Close();
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
         public void WriteOutput(object output)

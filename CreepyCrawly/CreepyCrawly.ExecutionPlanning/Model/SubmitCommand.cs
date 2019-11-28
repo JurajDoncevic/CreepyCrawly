@@ -28,7 +28,7 @@ namespace CreepyCrawly.ExecutionPlanning.Model
             }
             catch (Exception e)
             {
-                ErrorHandler.ReportCommandExecutionNonFatalFailed(e, Name);
+                ErrorHandler.ReportCommandExecutionFailed(e, Name);
                 return null;
             }
         }

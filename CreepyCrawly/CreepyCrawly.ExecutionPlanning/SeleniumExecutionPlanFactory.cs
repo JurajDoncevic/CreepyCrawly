@@ -147,8 +147,16 @@ namespace CreepyCrawly.ExecutionPlanning
             {
                 Extract_image_commandContext extract = ctx.extract_image_command();
                 ExtractImageCommand extractCommand = new ExtractImageCommand(extract.selector().GetText().Trim('\''),
-                                                                   executionEngine.ExtractImage
-                                                                  );
+                                                                             executionEngine.ExtractImage
+                                                                             );
+                return extractCommand;
+            }
+            else if (ctx.GetText().StartsWith("EXTRACT_ALL_IMAGES"))
+            {
+                Extract_all_images_commandContext extract = ctx.extract_all_images_command();
+                ExtractAllImagesCommand extractCommand = new ExtractAllImagesCommand(extract.selector().GetText().Trim('\''),
+                                                                                     executionEngine.ExtractAllImages
+                                                                                     );
                 return extractCommand;
             }
             else if (ctx.GetText().StartsWith("EXTRACT_TITLE"))
