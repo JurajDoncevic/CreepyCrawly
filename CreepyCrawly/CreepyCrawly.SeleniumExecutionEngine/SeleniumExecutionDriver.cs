@@ -30,6 +30,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                 service.HideCommandPromptWindow = true;
                 service.SuppressInitialDiagnosticInformation = true;
                 var options = new ChromeOptions();
+                options.AddArguments("--disable-web-security");
                 Driver = new ChromeDriver(service, options);
                 Driver.Manage().Window.Maximize();
                 Driver.Navigate().GoToUrl(sanitizedRootUrl);

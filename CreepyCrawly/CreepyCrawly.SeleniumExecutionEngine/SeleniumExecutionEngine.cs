@@ -97,6 +97,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                                    "var ctx = c.getContext('2d');" +
                                    string.Format("var imgs = document.querySelectorAll('{0}');", selector) +
                                    "imgs.forEach(function(item, index){" +
+                                   "item.crossOrigin='anonymous';" +
                                    "c.height=item.naturalHeight;" +
                                    "c.width=item.naturalWidth;" +
                                    "ctx.drawImage(item, 0, 0,item.naturalWidth, item.naturalHeight);" +
