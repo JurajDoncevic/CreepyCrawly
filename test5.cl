@@ -9,6 +9,6 @@ ON ROOT 'https://www.fer3.net' DO {
     WAIT_MS 200;
     FOREACH_CLICK 'a[data-xf-init="preview-tooltip"]' DO {
         WAIT_FOR 'body' 500;
-        EXTRACT_IMAGE 'a.avatar--m';
+        EXTRACT_ALL_IMAGES 'img';
     }
 }

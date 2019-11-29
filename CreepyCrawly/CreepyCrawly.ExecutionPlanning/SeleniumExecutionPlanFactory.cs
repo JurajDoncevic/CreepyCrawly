@@ -106,6 +106,38 @@ namespace CreepyCrawly.ExecutionPlanning
                                                                    );
                 return gotoClickCommand;
             }
+            else if (ctx.GetText().StartsWith("WHILE_CLICK"))
+            {
+                While_click_commandContext while_click = ctx.while_click_command();
+                var commandContexts = while_click.command_block().children;
+                foreach (var commandCtx in commandContexts)
+                {
+                    if (commandCtx.GetType() == typeof(Simple_commandContext))
+                    {
+                        ISimpleCommand simpleCommand = GetSimpleCommand((Simple_commandContext)commandCtx, executionEngine);
+                        if (simpleCommand != null)
+                        {
+                            commands.Add(simpleCommand);
+                        }
+                    }
+                    else if (commandCtx.GetType() == typeof(Complex_commandContext))
+                    {
+                        IComplexCommand complexCommand = GetComplexCommand((Complex_commandContext)commandCtx, executionEngine);
+                        if (complexCommand != null)
+                        {
+                            commands.Add(complexCommand);
+                        }
+                    }
+                }
+                WhileClickCommand whileClickCommand = new WhileClickCommand(commands,
+                                                                   while_click.selector().GetText().Trim('\''),
+                                                                   executionEngine.WhileClick_Head,
+                                                                   executionEngine.WhileClick_IterationBegin,
+                                                                   executionEngine.WhileClick_IterationEnd,
+                                                                   executionEngine.GotoClick_Tail
+                                                                   );
+                return whileClickCommand;
+            }
             else
             {
                 return null;

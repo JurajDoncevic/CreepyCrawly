@@ -203,8 +203,16 @@ namespace CreepyCrawly.SeleniumExecutionEngine
 
         public object WhileClick_IterationBegin(string selector)
         {
-            IWebElement element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
+            IWebElement element = null;
+            try
+            {
+                element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
 
+            }
+            catch (Exception)
+            {
+            }
+            
             if (element != null)
             {
                 _ExecutionDriver.SwitchToLastTab();
