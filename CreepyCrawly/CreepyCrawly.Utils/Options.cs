@@ -17,7 +17,7 @@ namespace CreepyCrawly.Utils
         [Option('r', "result-file", HelpText = "Write results to a text file at given path.", Required = false, SetName = "output")]
         public string ResultFilePath { get; set; }
 
-        [Option('i', "image-dir", HelpText = "Save extracted images to directory at given path", Required = false, SetName = "output", Default ="./images")]
+        [Option('i', "image-dir", HelpText = "Save extracted images to directory at given path", Required = false, SetName = "output")]
         public string ImageDirectoryPath { get; set; }
 
         [Option("engine", Default = "selenium", Required = false)]

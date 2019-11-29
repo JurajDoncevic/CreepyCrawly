@@ -1,9 +1,9 @@
 ON ROOT 'https://www.fer3.net' DO {
     CLICK 'a[href="/login/"]';
     WAIT_MS 200;
-    INPUT 'input[name="login"]' ('Felix');
+    INPUT 'input[name="login"]' ('<tvoj_username>');
     WAIT_MS 200;
-    INPUT 'input[name="password"]' ('blatiotoesea');
+    INPUT 'input[name="password"]' ('<tvoja_lozinka>');
     WAIT_MS 200;
     CLICK 'button.button--primary.button.button--icon.button--icon--login';
     WAIT_MS 200;

@@ -35,6 +35,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             StopEngine();
         }
+
         #region SIMPLE METHODS
         public object OnRoot(string wwwUrl)
         {
@@ -193,7 +194,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         #endregion
 
         #region WHILE CLICK
-        public object WhileClick_Head(string selector)
+        public object WhileClick_Head()
         {
             _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
             _ExecutionDriver.OpenNewDuplicateTab();
@@ -232,6 +233,55 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         }
 
         public object WhileClick_Tail()
+        {
+            string stackedTab = _WindowContextStack.Pop();
+            _IterationStack.Pop();
+            _ExecutionDriver.CloseCurrentTab();
+            _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
+            return null;
+        }
+        #endregion
+
+        #region DO WHILE CLICK
+        public object DoWhileClick_Head()
+        {
+            _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
+            _ExecutionDriver.OpenNewDuplicateTab();
+            _IterationStack.Push(new Queue<IWebElement>());
+            return null;
+        }
+
+        public object DoWhileClick_IterationBegin()
+        {
+            return null;
+        }
+
+        public object DoWhileClick_IterationEnd(string selector)
+        {
+            IWebElement element = null;
+            try
+            {
+                element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
+
+            }
+            catch (Exception)
+            {
+            }
+
+            if (element != null)
+            {
+                _ExecutionDriver.SwitchToLastTab();
+                element.Click();
+
+                return 1;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public object DoWhileClick_Tail()
         {
             string stackedTab = _WindowContextStack.Pop();
             _IterationStack.Pop();

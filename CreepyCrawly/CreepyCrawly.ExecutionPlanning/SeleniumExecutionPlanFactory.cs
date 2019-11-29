@@ -134,9 +134,41 @@ namespace CreepyCrawly.ExecutionPlanning
                                                                    executionEngine.WhileClick_Head,
                                                                    executionEngine.WhileClick_IterationBegin,
                                                                    executionEngine.WhileClick_IterationEnd,
-                                                                   executionEngine.GotoClick_Tail
+                                                                   executionEngine.WhileClick_Tail
                                                                    );
                 return whileClickCommand;
+            }
+            else if (ctx.GetText().StartsWith("DO") && ctx.do_while_click_command() != null)
+            {
+                Do_while_click_commandContext do_while_click = ctx.do_while_click_command();
+                var commandContexts = do_while_click.command_block().children;
+                foreach (var commandCtx in commandContexts)
+                {
+                    if (commandCtx.GetType() == typeof(Simple_commandContext))
+                    {
+                        ISimpleCommand simpleCommand = GetSimpleCommand((Simple_commandContext)commandCtx, executionEngine);
+                        if (simpleCommand != null)
+                        {
+                            commands.Add(simpleCommand);
+                        }
+                    }
+                    else if (commandCtx.GetType() == typeof(Complex_commandContext))
+                    {
+                        IComplexCommand complexCommand = GetComplexCommand((Complex_commandContext)commandCtx, executionEngine);
+                        if (complexCommand != null)
+                        {
+                            commands.Add(complexCommand);
+                        }
+                    }
+                }
+                DoWhileClickCommand doWhileClickCommand = new DoWhileClickCommand(commands,
+                                                                   do_while_click.selector().GetText().Trim('\''),
+                                                                   executionEngine.DoWhileClick_Head,
+                                                                   executionEngine.DoWhileClick_IterationBegin,
+                                                                   executionEngine.DoWhileClick_IterationEnd,
+                                                                   executionEngine.DoWhileClick_Tail
+                                                                   );
+                return doWhileClickCommand;
             }
             else
             {
