@@ -12,9 +12,9 @@ namespace CreepyCrawly.ExecutionPlanning.Model
         public string Selector { get; private set; }
         public Func<string, object> ExecutionHead { get; set; }
         public Func<object> ExecutionTail { get; set; }
-        public Func<string, object> ExecutionIterationBegin { get; set; }
+        public Func<object> ExecutionIterationBegin { get; set; }
         public Func<object> ExecutionIterationEnd { get; set; }
-        public ForEachClickCommand(List<ICommand> commands, string selector, Func<string, object> executionHead, Func<string, object> executionIterationBegin, Func<object> executionIterationEnd, Func<object> executionTail)
+        public ForEachClickCommand(List<ICommand> commands, string selector, Func<string, object> executionHead, Func<object> executionIterationBegin, Func<object> executionIterationEnd, Func<object> executionTail)
         {
             Name = "FOREACH";
             Commands = commands;
@@ -29,7 +29,7 @@ namespace CreepyCrawly.ExecutionPlanning.Model
         {
             List<object> results = new List<object>();
             ExecuteHead();
-            while(ExecutionIterationBegin.Invoke(Selector) != null)
+            while(ExecutionIterationBegin.Invoke() != null)
             {
                 results.Add(ExecuteBlock());
                 ExecutionIterationEnd.Invoke();
