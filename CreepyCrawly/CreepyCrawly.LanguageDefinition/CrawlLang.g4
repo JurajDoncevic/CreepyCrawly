@@ -20,6 +20,7 @@ EXTRACT_IMAGE_KEYWORD	:	'EXTRACT_IMAGE';
 EXTRACT_ALL_IMAGES_KEYWORD	:	'EXTRACT_ALL_IMAGES';
 GOTO_SRC_KEYWORD		:	'GOTO_SRC';
 GOTO_CLICK_KEYWORD		:	'GOTO_CLICK';
+WHILE_CLICK_KEYWORD		:	'WHILE_CLICK';
 
 TEXT             :   '\''(.)+?'\'';
 POSITIVE_INTEGER :   ([1-9]+[0-9]*|[0]);
@@ -101,10 +102,13 @@ foreach_click_command	:	FOREACH_CLICK_KEYWORD selector command_block
 foreach_href_command	:	FOREACH_HREF_KEYWORD selector command_block
 						;
 
+while_click_command		:	WHILE_CLICK_KEYWORD	selector command_block
+						;
+
 simple_command  :   (click_command|wait_ms_command|extract_text_command|extract_all_images_command|extract_title_command|extract_image_command|input_command|wait_for_command|select_command|submit_command)
                 ;
 
-complex_command :   (foreach_element_command|foreach_click_command|foreach_href_command|goto_src_command)
+complex_command :   (foreach_element_command|foreach_click_command|foreach_href_command|goto_src_command|goto_click_command|while_click_command)
                 ;
 
 command_block   :   DO_KEYWORD LCURLY (simple_command|complex_command)* RCURLY

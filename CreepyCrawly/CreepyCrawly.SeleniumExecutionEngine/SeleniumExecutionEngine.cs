@@ -12,7 +12,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
     public class SeleniumExecutionEngine : IDisposable
     {
         private Stack<string> _WindowContextStack = new Stack<string>();
-        private Stack<Queue<IWebElement>> _ForEachIteratorStack = new Stack<Queue<IWebElement>>();
+        private Stack<Queue<IWebElement>> _IterationStack = new Stack<Queue<IWebElement>>();
         private SeleniumExecutionDriver _ExecutionDriver;
         public bool IsEngineOk { get; private set; } = false;
 
@@ -138,17 +138,17 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
             _ExecutionDriver.OpenNewDuplicateTab();
-            _ForEachIteratorStack.Push(new Queue<IWebElement>(_ExecutionDriver.Driver.FindElementsByCssSelector(selector)));
+            _IterationStack.Push(new Queue<IWebElement>(_ExecutionDriver.Driver.FindElementsByCssSelector(selector)));
             return null;
         }
 
         public object ForEachClick_IterationBegin()
         {
-            var elementQueue = _ForEachIteratorStack.Pop();
+            var elementQueue = _IterationStack.Pop();
             IWebElement element = null;
             elementQueue.TryDequeue(out element);
 
-            _ForEachIteratorStack.Push(elementQueue);
+            _IterationStack.Push(elementQueue);
 
             if (element != null)
             {
@@ -185,7 +185,65 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public object ForEachClick_Tail()
         {
             string stackedTab = _WindowContextStack.Pop();
-            _ForEachIteratorStack.Pop();
+            _IterationStack.Pop();
+            _ExecutionDriver.CloseCurrentTab();
+            _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
+            return null;
+        }
+        #endregion
+
+        #region WHILE CLICK
+        public object WhileClick_Head(string selector)
+        {
+            _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
+            _ExecutionDriver.OpenNewDuplicateTab();
+            _IterationStack.Push(new Queue<IWebElement>());
+            return null;
+        }
+
+        public object WhileClick_IterationBegin(string selector)
+        {
+            IWebElement element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
+
+            if (element != null)
+            {
+                _ExecutionDriver.SwitchToLastTab();
+                element.Click();
+
+                return 1;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public object WhileClick_IterationEnd()
+        {
+            return null;
+        }
+
+        public object WhileClick_Tail()
+        {
+            string stackedTab = _WindowContextStack.Pop();
+            _IterationStack.Pop();
+            _ExecutionDriver.CloseCurrentTab();
+            _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
+            return null;
+        }
+        #endregion
+
+        #region GOTO CLICK
+        public object GotoClick_Head(string selector)
+        {
+            _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
+            _ExecutionDriver.OpenNewDuplicateTab();
+            _ExecutionDriver.Driver.FindElementByCssSelector(selector).Click();
+            return null;
+        }
+        public object GotoClick_Tail()
+        {
+            string stackedTab = _WindowContextStack.Pop();
             _ExecutionDriver.CloseCurrentTab();
             _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
             return null;

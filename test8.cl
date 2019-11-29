@@ -1,5 +1,6 @@
-ON ROOT '' DO{
-        FOREACH_CLICK 'img.thumb' DO {
-            EXTRACT_ALL_IMAGES 'div#gallery img.thumb';
-        }
+ON ROOT 'https://www.crwflags.com/fotw/flags/country.html' DO {
+    GOTO_CLICK 'ul > li > a[href="af.html"]' DO {
+        WAIT_MS 3000;
+        EXTRACT_TITLE;
+    }
 }

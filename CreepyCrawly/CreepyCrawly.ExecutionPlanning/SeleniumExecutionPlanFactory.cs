@@ -21,15 +21,15 @@ namespace CreepyCrawly.ExecutionPlanning
 
             foreach (var commandCtx in commandContexts)
             {
-                if(commandCtx.GetType() == typeof(Simple_commandContext))
+                if (commandCtx.GetType() == typeof(Simple_commandContext))
                 {
                     ISimpleCommand simpleCommand = GetSimpleCommand((Simple_commandContext)commandCtx, executionEngine);
-                    if(simpleCommand != null)
+                    if (simpleCommand != null)
                     {
                         commands.Add(simpleCommand);
                     }
                 }
-                else if(commandCtx.GetType() == typeof(Complex_commandContext))
+                else if (commandCtx.GetType() == typeof(Complex_commandContext))
                 {
                     IComplexCommand complexCommand = GetComplexCommand((Complex_commandContext)commandCtx, executionEngine);
                     if (complexCommand != null)
@@ -75,6 +75,36 @@ namespace CreepyCrawly.ExecutionPlanning
                                                                    executionEngine.ForEachClick_Tail
                                                                    );
                 return forEachClickCommand;
+            }
+            else if (ctx.GetText().StartsWith("GOTO_CLICK"))
+            {
+                Goto_click_commandContext goto_click = ctx.goto_click_command();
+                var commandContexts = goto_click.command_block().children;
+                foreach (var commandCtx in commandContexts)
+                {
+                    if (commandCtx.GetType() == typeof(Simple_commandContext))
+                    {
+                        ISimpleCommand simpleCommand = GetSimpleCommand((Simple_commandContext)commandCtx, executionEngine);
+                        if (simpleCommand != null)
+                        {
+                            commands.Add(simpleCommand);
+                        }
+                    }
+                    else if (commandCtx.GetType() == typeof(Complex_commandContext))
+                    {
+                        IComplexCommand complexCommand = GetComplexCommand((Complex_commandContext)commandCtx, executionEngine);
+                        if (complexCommand != null)
+                        {
+                            commands.Add(complexCommand);
+                        }
+                    }
+                }
+                GotoClickCommand gotoClickCommand = new GotoClickCommand(commands,
+                                                                   goto_click.selector().GetText().Trim('\''),
+                                                                   executionEngine.GotoClick_Head,
+                                                                   executionEngine.GotoClick_Tail
+                                                                   );
+                return gotoClickCommand;
             }
             else
             {
