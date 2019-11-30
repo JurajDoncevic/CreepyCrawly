@@ -259,6 +259,18 @@ namespace CreepyCrawly.ExecutionPlanning
                 ExtractTitleCommand extractCommand = new ExtractTitleCommand(executionEngine.ExtractTitle);
                 return extractCommand;
             }
+            else if (ctx.GetText().StartsWith("EXTRACT_TO_CSV"))
+            {
+                Extract_to_csv_commandContext extract = ctx.extract_to_csv_command();
+                List<string> selectors = new List<string>();
+                var selectorContexts = extract.selector();
+                foreach (var selectorContext in selectorContexts)
+                {
+                    selectors.Add(selectorContext.GetText().Trim('\''));
+                }
+                ExtractToCsvCommand extractCommand = new ExtractToCsvCommand(selectors, executionEngine.ExtractToCsv);
+                return extractCommand;
+            }
             else
             {
                 return null;

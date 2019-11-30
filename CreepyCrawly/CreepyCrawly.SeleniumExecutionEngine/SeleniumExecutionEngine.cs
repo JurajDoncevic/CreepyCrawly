@@ -107,7 +107,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                                    "b64List.push(b64);" +
                                    "});" +
                                    "return b64List;";
-            var base64strings = ((IReadOnlyCollection<object>)_ExecutionDriver.Driver.ExecuteScript(scriptText)).Select(_=>_.ToString()).ToArray();
+            var base64strings = ((IReadOnlyCollection<object>)_ExecutionDriver.Driver.ExecuteScript(scriptText)).Select(_ => _.ToString()).ToArray();
             return base64strings;
         }
         public string ExtractImage(string selector)
@@ -132,6 +132,27 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             return null;
         }
+
+        public object ExtractToCsv(ICollection<string> selectors)
+        {
+            List<IWebElement> elements = new List<IWebElement>();
+            foreach (string selector in selectors)
+            {
+                IWebElement element = null;
+                try
+                {
+                    element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
+                }
+                catch (Exception e)
+                {
+                    
+                }
+                elements.Add(element);
+            }
+            string csv = elements.Select(_ => _ != null ? _.Text : "").Aggregate((_1, _2) => _1 + "," + _2);
+            return csv;
+        }
+
         #endregion
 
         #region FOREACH CLICK
@@ -213,7 +234,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             catch (Exception)
             {
             }
-            
+
             if (element != null)
             {
                 _ExecutionDriver.SwitchToLastTab();
