@@ -58,7 +58,18 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             {
             }
         }
+        public void OpenNewEmptyTab()
+        {
+            Driver.ExecuteScript("window.open()");
+            Driver.SwitchTo().Window(Driver.WindowHandles[Driver.WindowHandles.Count - 1]);
+        }
 
+        public void OpenNewTabOnUrl(string url)
+        {
+            Driver.ExecuteScript("window.open()");
+            Driver.SwitchTo().Window(Driver.WindowHandles[Driver.WindowHandles.Count - 1]);
+            Driver.Url = url;
+        }
         public void OpenNewDuplicateTab()
         {
             string currentUrl = Driver.Url;
