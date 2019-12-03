@@ -113,8 +113,11 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         }
         public string ExtractImage(string selector)
         {
-            //var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
-            string scriptText = string.Format(@"
+            string retVal = null;
+            try
+            {
+                //var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
+                string scriptText = string.Format(@"
                                     var c = document.createElement('canvas');
                                     var ctx = c.getContext('2d');
                                     var img = document.querySelector('{0}');
@@ -125,10 +128,64 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                                     b64 = uri.replace(/^data:image.+;base64,/, '');
                                     return b64;
                                     ", selector);
-            var base64string = _ExecutionDriver.Driver.ExecuteScript(scriptText) as string;
-            string[] split = base64string.Split(',');
-            return split[split.Length - 1];
+
+                var base64string = _ExecutionDriver.Driver.ExecuteScript(scriptText) as string;
+                string[] split = base64string.Split(',');
+                retVal = split[split.Length - 1];
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    retVal = TryWithSrcExtractImage(selector);
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+            return retVal;
         }
+        private string TryWithSrcExtractImage(string selector)
+        {
+            string retVal = null;
+            _ExecutionDriver.OpenNewDuplicateTab();
+            try { 
+            _ExecutionDriver.SwitchToLastTab();
+
+            IWebElement element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
+            if(element != null)
+            {
+                string srcUrl = element.GetAttribute("src");
+                _ExecutionDriver.Driver.Url = srcUrl;
+
+                string scriptText = string.Format(@"
+                                    var c = document.createElement('canvas');
+                                    var ctx = c.getContext('2d');
+                                    var img = document.querySelector('img');
+                                    c.height=img.naturalHeight;
+                                    c.width=img.naturalWidth;
+                                    ctx.drawImage(img, 0, 0,img.naturalWidth, img.naturalHeight);
+                                    var uri = c.toDataURL('image/png'),
+                                    b64 = uri.replace(/^data:image.+;base64,/, '');
+                                    return b64;
+                                    ", selector);
+
+                var base64string = _ExecutionDriver.Driver.ExecuteScript(scriptText) as string;
+                string[] split = base64string.Split(',');
+                retVal = split[split.Length - 1];
+            }
+            }
+            catch
+            {
+                _ExecutionDriver.CloseCurrentTab();
+                throw;
+            }
+            _ExecutionDriver.CloseCurrentTab();
+            _ExecutionDriver.SwitchToLastTab();
+            return retVal;
+        }
+
         public object ExtractScript(string selector)
         {
             return null;
@@ -146,7 +203,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                 }
                 catch (Exception e)
                 {
-                    
+
                 }
                 elements.Add(element);
             }
@@ -244,7 +301,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                 _ExecutionDriver.OpenNewDuplicateTab();
                 _ExecutionDriver.SwitchToLastTab();
                 _ExecutionDriver.Driver.Url = hrefUrl;
-                
+
 
                 return 1;
             }
@@ -259,7 +316,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
 
         public object ForEachHref_IterationEnd()
         {
-            
+
             _ExecutionDriver.CloseCurrentTab();
             _ExecutionDriver.SwitchToLastTab();
             return null;
