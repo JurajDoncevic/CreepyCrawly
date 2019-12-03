@@ -225,7 +225,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             string currentUrl = _ExecutionDriver.Driver.Url;
             foreach (IWebElement element in _ExecutionDriver.Driver.FindElementsByCssSelector(selector))
             {
-                hrefs.Add(currentUrl + "/" + element.GetAttribute("href"));
+                hrefs.Add(element.GetAttribute("href"));
             }
             _HrefIterationStack.Push(new Queue<string>(hrefs));
             return null;

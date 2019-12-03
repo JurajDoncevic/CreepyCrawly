@@ -1,4 +1,5 @@
 ON ROOT 'https://www.fer3.net' DO {
+    WAIT_FOR 'body' 2000;
     CLICK 'a[href="/login/"]';
     WAIT_MS 200;
     INPUT 'input[name="login"]' ('Felix');
