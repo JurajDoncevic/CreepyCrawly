@@ -76,6 +76,38 @@ namespace CreepyCrawly.ExecutionPlanning
                                                                    );
                 return forEachClickCommand;
             }
+            else if (ctx.GetText().StartsWith("FOREACH_HREF"))
+            {
+                Foreach_href_commandContext foreach_href = ctx.foreach_href_command();
+                var commandContexts = foreach_href.command_block().children;
+                foreach (var commandCtx in commandContexts)
+                {
+                    if (commandCtx.GetType() == typeof(Simple_commandContext))
+                    {
+                        ISimpleCommand simpleCommand = GetSimpleCommand((Simple_commandContext)commandCtx, executionEngine);
+                        if (simpleCommand != null)
+                        {
+                            commands.Add(simpleCommand);
+                        }
+                    }
+                    else if (commandCtx.GetType() == typeof(Complex_commandContext))
+                    {
+                        IComplexCommand complexCommand = GetComplexCommand((Complex_commandContext)commandCtx, executionEngine);
+                        if (complexCommand != null)
+                        {
+                            commands.Add(complexCommand);
+                        }
+                    }
+                }
+                ForEachHrefCommand forEachHrefCommand = new ForEachHrefCommand(commands,
+                                                                   foreach_href.selector().GetText().Trim('\''),
+                                                                   executionEngine.ForEachHref_Head,
+                                                                   executionEngine.ForEachHref_IterationBegin,
+                                                                   executionEngine.ForEachHref_IterationEnd,
+                                                                   executionEngine.ForEachHref_Tail
+                                                                   );
+                return forEachHrefCommand;
+            }
             else if (ctx.GetText().StartsWith("GOTO_CLICK"))
             {
                 Goto_click_commandContext goto_click = ctx.goto_click_command();
@@ -169,7 +201,7 @@ namespace CreepyCrawly.ExecutionPlanning
                                                                    executionEngine.DoWhileClick_Tail
                                                                    );
                 return doWhileClickCommand;
-            }
+            }         
             else
             {
                 return null;

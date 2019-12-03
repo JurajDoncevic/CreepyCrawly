@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace CreepyCrawly.ExecutionPlanning.Model
 {
-    public class ForEachClickCommand : IComplexCommand
+    public class ForEachHrefCommand : IComplexCommand
     {
         public string Name { get; private set; }
         public List<ICommand> Commands { get; private set; }
@@ -14,9 +13,9 @@ namespace CreepyCrawly.ExecutionPlanning.Model
         public Func<object> ExecutionTail { get; set; }
         public Func<object> ExecutionIterationBegin { get; set; }
         public Func<object> ExecutionIterationEnd { get; set; }
-        public ForEachClickCommand(List<ICommand> commands, string selector, Func<string, object> executionHead, Func<object> executionIterationBegin, Func<object> executionIterationEnd, Func<object> executionTail)
+        public ForEachHrefCommand(List<ICommand> commands, string selector, Func<string, object> executionHead, Func<object> executionIterationBegin, Func<object> executionIterationEnd, Func<object> executionTail)
         {
-            Name = "FOREACH_CLICK";
+            Name = "FOREACH_HREF";
             Commands = commands;
             Selector = selector;
             ExecutionHead = executionHead;
@@ -29,14 +28,14 @@ namespace CreepyCrawly.ExecutionPlanning.Model
         {
             List<object> results = new List<object>();
             ExecuteHead();
-            while(ExecutionIterationBegin.Invoke() != null)
+            while (ExecutionIterationBegin.Invoke() != null)
             {
                 results.Add(ExecuteBlock());
                 ExecutionIterationEnd.Invoke();
             }
-            
+
             ExecutionTail.Invoke();
-            
+
             return results;
         }
 

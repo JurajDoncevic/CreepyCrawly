@@ -12,7 +12,8 @@ namespace CreepyCrawly.SeleniumExecutionEngine
     public class SeleniumExecutionEngine : IDisposable
     {
         private Stack<string> _WindowContextStack = new Stack<string>();
-        private Stack<Queue<IWebElement>> _IterationStack = new Stack<Queue<IWebElement>>();
+        private Stack<Queue<IWebElement>> _ClickIterationStack = new Stack<Queue<IWebElement>>();
+        private Stack<Queue<string>> _HrefIterationStack = new Stack<Queue<string>>();
         private SeleniumExecutionDriver _ExecutionDriver;
         public bool IsEngineOk { get; private set; } = false;
 
@@ -160,17 +161,17 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
             _ExecutionDriver.OpenNewDuplicateTab();
-            _IterationStack.Push(new Queue<IWebElement>(_ExecutionDriver.Driver.FindElementsByCssSelector(selector)));
+            _ClickIterationStack.Push(new Queue<IWebElement>(_ExecutionDriver.Driver.FindElementsByCssSelector(selector)));
             return null;
         }
 
         public object ForEachClick_IterationBegin()
         {
-            var elementQueue = _IterationStack.Pop();
+            var elementQueue = _ClickIterationStack.Pop();
             IWebElement element = null;
             elementQueue.TryDequeue(out element);
 
-            _IterationStack.Push(elementQueue);
+            _ClickIterationStack.Push(elementQueue);
 
             if (element != null)
             {
@@ -207,7 +208,67 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public object ForEachClick_Tail()
         {
             string stackedTab = _WindowContextStack.Pop();
-            _IterationStack.Pop();
+            _ClickIterationStack.Pop();
+            _ExecutionDriver.CloseCurrentTab();
+            _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
+            return null;
+        }
+        #endregion
+
+        #region FOREACH HREF
+        public object ForEachHref_Head(string selector)
+        {
+            _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
+            _ExecutionDriver.OpenNewDuplicateTab();
+
+            List<string> hrefs = new List<string>();
+            string currentUrl = _ExecutionDriver.Driver.Url;
+            foreach (IWebElement element in _ExecutionDriver.Driver.FindElementsByCssSelector(selector))
+            {
+                hrefs.Add(currentUrl + "/" + element.GetAttribute("href"));
+            }
+            _HrefIterationStack.Push(new Queue<string>(hrefs));
+            return null;
+        }
+
+        public object ForEachHref_IterationBegin()
+        {
+            var hrefQueue = _HrefIterationStack.Pop();
+            string hrefUrl = null;
+            hrefQueue.TryDequeue(out hrefUrl);
+
+            _HrefIterationStack.Push(hrefQueue);
+
+            if (hrefUrl != null)
+            {
+                _ExecutionDriver.OpenNewDuplicateTab();
+                _ExecutionDriver.SwitchToLastTab();
+                _ExecutionDriver.Driver.Url = hrefUrl;
+                
+
+                return 1;
+            }
+            else
+            {
+                return null;
+            }
+
+
+
+        }
+
+        public object ForEachHref_IterationEnd()
+        {
+            
+            _ExecutionDriver.CloseCurrentTab();
+            _ExecutionDriver.SwitchToLastTab();
+            return null;
+        }
+
+        public object ForEachHref_Tail()
+        {
+            string stackedTab = _WindowContextStack.Pop();
+            _HrefIterationStack.Pop();
             _ExecutionDriver.CloseCurrentTab();
             _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
             return null;
@@ -219,7 +280,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
             _ExecutionDriver.OpenNewDuplicateTab();
-            _IterationStack.Push(new Queue<IWebElement>());
+            _ClickIterationStack.Push(new Queue<IWebElement>());
             return null;
         }
 
@@ -256,7 +317,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public object WhileClick_Tail()
         {
             string stackedTab = _WindowContextStack.Pop();
-            _IterationStack.Pop();
+            _ClickIterationStack.Pop();
             _ExecutionDriver.CloseCurrentTab();
             _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
             return null;
@@ -268,7 +329,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
             _ExecutionDriver.OpenNewDuplicateTab();
-            _IterationStack.Push(new Queue<IWebElement>());
+            _ClickIterationStack.Push(new Queue<IWebElement>());
             return null;
         }
 
@@ -305,7 +366,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public object DoWhileClick_Tail()
         {
             string stackedTab = _WindowContextStack.Pop();
-            _IterationStack.Pop();
+            _ClickIterationStack.Pop();
             _ExecutionDriver.CloseCurrentTab();
             _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
             return null;
