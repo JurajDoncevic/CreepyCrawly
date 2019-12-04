@@ -75,7 +75,7 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             System.Threading.Thread.Sleep(waitAmount);
             return null;
         }
-        public object WaitLoad(string selector, int waitAmount)
+        public object WaitFor(string selector, int waitAmount)
         {
             new WebDriverWait(_ExecutionDriver.Driver, new TimeSpan(0, 0, 0, 0, waitAmount))
                     .Until(_ => By.CssSelector(selector));

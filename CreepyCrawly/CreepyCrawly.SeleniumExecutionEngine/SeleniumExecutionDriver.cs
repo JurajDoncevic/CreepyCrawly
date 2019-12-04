@@ -23,14 +23,15 @@ namespace CreepyCrawly.SeleniumExecutionEngine
 
         public void StartDriver(string rootUrl)
         {
-            string sanitizedRootUrl = rootUrl.StartsWith("http://") || rootUrl.StartsWith("https://") ? rootUrl : "http://" + rootUrl;
+            string sanitizedRootUrl = string.IsNullOrWhiteSpace(rootUrl) ? "http://google.com" : rootUrl.StartsWith("http://") || rootUrl.StartsWith("https://") ? rootUrl : "http://" + rootUrl;
             try
             {
                 var service = ChromeDriverService.CreateDefaultService(DriverPath);
                 service.HideCommandPromptWindow = true;
                 service.SuppressInitialDiagnosticInformation = true;
                 var options = new ChromeOptions();
-                options.AddArguments("--disable-web-security");
+                options.AddArgument("disable-web-security");
+                options.AddArgument("headless");
                 Driver = new ChromeDriver(service, options);
                 Driver.Manage().Window.Maximize();
                 Driver.Navigate().GoToUrl(sanitizedRootUrl);

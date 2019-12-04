@@ -232,7 +232,7 @@ namespace CreepyCrawly.ExecutionPlanning
                 Wait_for_commandContext waitLoad = ctx.wait_for_command();
                 WaitForCommand waitLoadCommand = new WaitForCommand(waitLoad.selector().GetText().Trim('\''),
                                                                       Convert.ToInt32(waitLoad.wait_amount().POSITIVE_INTEGER().GetText()),
-                                                                      executionEngine.WaitLoad
+                                                                      executionEngine.WaitFor
                                                                       );
                 return waitLoadCommand;
             }
