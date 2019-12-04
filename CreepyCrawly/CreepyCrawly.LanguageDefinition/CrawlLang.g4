@@ -36,6 +36,7 @@ LCURLY      :   '{';
 RCURLY      :   '}';
 
 WS  :   [ \r\t\u000C\n]+ -> skip;
+COMMENT	:	'/*'(.)*'*/' -> skip;
 
 /* SYNTAX RULES */
 text_value      : LPAREN TEXT RPAREN
