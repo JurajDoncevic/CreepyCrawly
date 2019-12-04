@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using CreepyCrawly.Utils;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using System;
@@ -30,8 +31,10 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                 service.HideCommandPromptWindow = true;
                 service.SuppressInitialDiagnosticInformation = true;
                 var options = new ChromeOptions();
+                if(InstanceOptions.Options.RunHeadlessDriver)
+                    options.AddArgument("headless");
                 options.AddArgument("disable-web-security");
-                options.AddArgument("headless");
+                
                 Driver = new ChromeDriver(service, options);
                 Driver.Manage().Window.Maximize();
                 Driver.Navigate().GoToUrl(sanitizedRootUrl);

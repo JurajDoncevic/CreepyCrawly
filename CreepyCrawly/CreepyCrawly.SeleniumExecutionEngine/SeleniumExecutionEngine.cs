@@ -20,6 +20,11 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public SeleniumExecutionEngine()
         {
             _ExecutionDriver = new SeleniumExecutionDriver();
+            StartEngine("");
+        }
+
+        public void StartEngine(string rootUrl)
+        {
             if (!_ExecutionDriver.IsDriverRunning)
             {
                 _ExecutionDriver.StartDriver("");
