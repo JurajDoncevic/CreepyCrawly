@@ -26,6 +26,9 @@ namespace CreepyCrawly.Utils
         [Option("verbose-errors", Default = false, Required = false)]
         public bool VerboseErrors { get; set; }
 
+        [Option("no-browser", Default = false, Required = false)]
+        public bool RunHeadlessDriver { get; set; }
+
         [Usage(ApplicationAlias = "CreepyCrawly.exe")]
         public static IEnumerable<Example> Examples
         {
