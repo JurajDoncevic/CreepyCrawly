@@ -34,6 +34,8 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                 options.AddArgument("headless");
                 Driver = new ChromeDriver(service, options);
                 Driver.Manage().Window.Maximize();
+
+                //remove this???
                 Driver.Navigate().GoToUrl(sanitizedRootUrl);
                 IsDriverRunning = true;
             }
