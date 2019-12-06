@@ -1,10 +1,10 @@
 ON ROOT '' DO {
-    WAIT_LOAD 'body' 3000;
-    FOREACH 'img.thumb' DO {
-        WAIT_LOAD 'body' 3000;
+    WAIT_FOR 'body' 3000;
+    FOREACH_CLICK 'img.thumb' DO {
+        WAIT_FOR 'body' 3000;
         EXTRACT_TEXT 'title';
-        FOREACH 'div#gallery img.thumb' DO {
-            WAIT_LOAD 'body' 3000;
+        FOREACH_CLICK 'div#gallery img.thumb' DO {
+            WAIT_FOR 'body' 3000;
             EXTRACT_IMAGE 'img';
         }
     }
