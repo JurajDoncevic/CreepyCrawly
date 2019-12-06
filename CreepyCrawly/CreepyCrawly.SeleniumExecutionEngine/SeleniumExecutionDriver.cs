@@ -1,5 +1,4 @@
-﻿using CreepyCrawly.Utils;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using System;
@@ -13,33 +12,37 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         public string CurrentTab { get; private set; }
         public string DriverPath { get; private set; } = "./";
 
-        public SeleniumExecutionDriver(string driverPath) : base()
+        private bool _RunHeadless = false;
+        private bool _DisableWebSecurity = false;
+        private ChromeOptions _ChromeOptions;
+
+        public SeleniumExecutionDriver(string driverPath, bool runHeadless = false, bool disableWebSecurity = false) : this(driverPath)
+        {
+            _RunHeadless = runHeadless;
+            _DisableWebSecurity = disableWebSecurity;
+        }
+        public SeleniumExecutionDriver(string driverPath) : this()
         {
             DriverPath = driverPath;
         }
-
-        public SeleniumExecutionDriver()
+        private SeleniumExecutionDriver()
         {
+            _ChromeOptions = new ChromeOptions();
+            if (_RunHeadless)
+                _ChromeOptions.AddArgument("headless");
+            if (_DisableWebSecurity)
+                _ChromeOptions.AddArgument("disable-web-security");
         }
 
-        public void StartDriver(string rootUrl)
+        public void StartDriver()
         {
-            string sanitizedRootUrl = string.IsNullOrWhiteSpace(rootUrl) ? "http://google.com" : rootUrl.StartsWith("http://") || rootUrl.StartsWith("https://") ? rootUrl : "http://" + rootUrl;
             try
             {
                 var service = ChromeDriverService.CreateDefaultService(DriverPath);
                 service.HideCommandPromptWindow = true;
                 service.SuppressInitialDiagnosticInformation = true;
-                var options = new ChromeOptions();
-                if(InstanceOptions.Options.RunHeadlessDriver)
-                    options.AddArgument("headless");
-                options.AddArgument("disable-web-security");
-                
-                Driver = new ChromeDriver(service, options);
+                Driver = new ChromeDriver(service, _ChromeOptions);
                 Driver.Manage().Window.Maximize();
-
-                //remove this???
-                Driver.Navigate().GoToUrl(sanitizedRootUrl);
                 IsDriverRunning = true;
             }
             catch (Exception e)

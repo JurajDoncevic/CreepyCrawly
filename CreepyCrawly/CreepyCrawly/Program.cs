@@ -16,8 +16,8 @@ namespace CreepyCrawly
 
         static void Main(string[] args)
         {
-            InstanceOptions.GenerateOptionsFromArgs(args);
-            Options options = InstanceOptions.Options;
+
+            Options options = GenerateOptionsFromArgs(args);
 
             if (options != null)
                 Run(options);
@@ -52,6 +52,7 @@ namespace CreepyCrawly
                     List<object> outputs = new List<object>();
                     using (SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine = new SeleniumExecutionEngine.SeleniumExecutionEngine())
                     {
+                        executionEngine.StartEngine();
                         ExecutionPlanning.Model.ExecutionPlan plan = SeleniumExecutionPlanFactory.GenerateExecutionPlan(crawlLangEngine.StartingContext, executionEngine);
                         if (options.WriteToStdout)
                         {
@@ -70,18 +71,12 @@ namespace CreepyCrawly
                         {
                             plan.Commands.ForEach(cmd =>
                             {
-                                var output = cmd.Execute();
-                                if (output != null)
-                                {
-                                    outputs.Add(output);
-
-                                }
-
+                                cmd.Execute();
                             });
                         }
                         else
                         {
-                            Console.Error.WriteLine("Could not start the execution engine :(\nMaybe you are missing an appropriate chromedriver in the app root directory.");
+                            Console.Error.WriteLine("Engine wasn't started :(\nMaybe you are missing an appropriate chromedriver in the app root directory.");
                         }
                     }
                 }
@@ -102,13 +97,28 @@ namespace CreepyCrawly
             Console.ReadKey();
             Environment.Exit(0);
         }
-        public static void WriteResultsToFile(List<object> results)
-        {
 
+        public static Options GenerateOptionsFromArgs(string[] args)
+        {
+            Options options = null;
+            var parser = new Parser(with => { with.EnableDashDash = true; with.HelpWriter = Console.Out; });
+            var result = parser.ParseArguments<Options>(args);
+            result.WithParsed<Options>(_ => options = _);
+
+            return options;
         }
-        public static void WriteResultsToConsole(List<object> results)
+        public static void SetErrorOptions(Options options)
         {
-
+            ErrorHandler.DisplayVerboseErrors = options.VerboseErrors;
+        }
+        public static SeleniumExecutionEngineOptions CreateEngineOptions(Options options)
+        {
+            return new SeleniumExecutionEngineOptions()
+            {
+                RunHeadlessBrowser = options.RunHeadlessDriver,
+                DisableWebSecurity = options.DisableWebSecurity
+            };
         }
     }
 }
+

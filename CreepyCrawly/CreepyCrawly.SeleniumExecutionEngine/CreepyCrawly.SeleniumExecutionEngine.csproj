@@ -10,8 +10,4 @@
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="78.0.3904.7000" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CreepyCrawly.Utils\CreepyCrawly.Utils.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -17,17 +17,21 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         private SeleniumExecutionDriver _ExecutionDriver;
         public bool IsEngineOk { get; private set; } = false;
 
-        public SeleniumExecutionEngine()
+        public SeleniumExecutionEngine(string chromeDriverPath, SeleniumExecutionEngineOptions options)
         {
-            _ExecutionDriver = new SeleniumExecutionDriver();
-            StartEngine("");
+            _ExecutionDriver = new SeleniumExecutionDriver(chromeDriverPath, options.RunHeadlessBrowser, options.DisableWebSecurity);
         }
 
-        public void StartEngine(string rootUrl)
+        public SeleniumExecutionEngine()
+        {
+            _ExecutionDriver = new SeleniumExecutionDriver("./");
+        }
+
+        public void StartEngine()
         {
             if (!_ExecutionDriver.IsDriverRunning)
             {
-                _ExecutionDriver.StartDriver("");
+                _ExecutionDriver.StartDriver();
                 IsEngineOk = true;
             }
         }

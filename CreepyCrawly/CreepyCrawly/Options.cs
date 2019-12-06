@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CreepyCrawly.Utils
+namespace CreepyCrawly
 {
     public class Options
     {
@@ -17,17 +17,20 @@ namespace CreepyCrawly.Utils
         [Option('r', "result-file", HelpText = "Write results to a text file at given path.", Required = false, SetName = "output")]
         public string ResultFilePath { get; set; }
 
-        [Option('i', "image-dir", HelpText = "Save extracted images to directory at given path", Required = false, SetName = "output")]
+        [Option('i', "image-dir", HelpText = "Save extracted images to directory at given path.", Required = false, SetName = "output")]
         public string ImageDirectoryPath { get; set; }
 
-        [Option("engine", Default = "selenium", Required = false)]
+        [Option("engine", HelpText = "Use this engine to run the scraping.", Default = "selenium", Required = false)]
         public string UseEngine { get; set; }
 
-        [Option("verbose-errors", Default = false, Required = false)]
+        [Option("verbose-errors", HelpText = "Display all errors and warnings.", Default = false, Required = false)]
         public bool VerboseErrors { get; set; }
 
-        [Option("no-browser", Default = false, Required = false)]
+        [Option("no-browser", HelpText = "Run the scraping without displaying the browser.", Default = false, Required = false)]
         public bool RunHeadlessDriver { get; set; }
+
+        [Option("disable-web-sec", HelpText = "Disable chromedriver's security option.", Default = false, Required = false)]
+        public bool DisableWebSecurity { get; set; }
 
         [Usage(ApplicationAlias = "CreepyCrawly.exe")]
         public static IEnumerable<Example> Examples
