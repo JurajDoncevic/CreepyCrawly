@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.852
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly", "CreepyCrawly\CreepyCrawly.csproj", "{6E750844-6ECB-40ED-8296-7FC92DB285AD}"
 EndProject
@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.ExecutionPlann
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.Output", "CreepyCrawly.Output\CreepyCrawly.Output.csproj", "{F6257EF4-ADCB-41FA-A445-2A56F92D1238}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreepyCrawly.Utils", "CreepyCrawly.Utils\CreepyCrawly.Utils.csproj", "{09DBEA65-BC95-438C-8DFC-9EE34AA8EB41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.Utils", "CreepyCrawly.Utils\CreepyCrawly.Utils.csproj", "{09DBEA65-BC95-438C-8DFC-9EE34AA8EB41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreepyCrawlyWPF", "CreepyCrawlyWPF\CreepyCrawlyWPF.csproj", "{30CE6960-4054-49A7-BB5B-87851A4748F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{09DBEA65-BC95-438C-8DFC-9EE34AA8EB41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09DBEA65-BC95-438C-8DFC-9EE34AA8EB41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09DBEA65-BC95-438C-8DFC-9EE34AA8EB41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30CE6960-4054-49A7-BB5B-87851A4748F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30CE6960-4054-49A7-BB5B-87851A4748F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30CE6960-4054-49A7-BB5B-87851A4748F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30CE6960-4054-49A7-BB5B-87851A4748F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
