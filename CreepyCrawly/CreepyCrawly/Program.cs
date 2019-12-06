@@ -66,7 +66,8 @@ namespace CreepyCrawly
                         {
                             CreepyCrawly.Output.OutputSingleton.CreateImageFileOutputter(options.ImageDirectoryPath);
                         }
-
+                        CreepyCrawly.Output.OutputSingleton.CreateStringOutputter();
+                        CreepyCrawly.Output.OutputSingleton.AssignEventHandlerToStringOutputters(__NewOutputAppeared);
                         if (executionEngine.IsEngineOk)
                         {
                             plan.Commands.ForEach(cmd =>
@@ -90,6 +91,10 @@ namespace CreepyCrawly
             CloseApp();
         }
 
+        private static void __NewOutputAppeared(object sender, Output.NewOutputAppearedEventArgs e)
+        {
+            Console.WriteLine("STRING WRITER SAYS = " + e.Output + "AT:" +e.TimeAppeared.ToString());
+        }
 
         public static void CloseApp()
         {
