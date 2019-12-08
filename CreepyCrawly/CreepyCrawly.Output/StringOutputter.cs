@@ -15,10 +15,10 @@ namespace CreepyCrawly.Output
 
         public void WriteOutput(object output)
         {
-            OnThresholdReached(new NewOutputAppearedEventArgs(output.ToString()));
+            OnNewOutputAppeared(new NewOutputAppearedEventArgs(output.ToString()));
         }
 
-        protected virtual void OnThresholdReached(NewOutputAppearedEventArgs e)
+        protected virtual void OnNewOutputAppeared(NewOutputAppearedEventArgs e)
         {
             NewOutputAppeared?.Invoke(this, e);
         }

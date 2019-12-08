@@ -27,6 +27,12 @@ namespace CreepyCrawly.Output
         {
             _Outputters.Add(new ImageFileOutputter(baseDirPath));
         }
+        public static void WriteToStringOutputters(object output)
+        {
+            _Outputters.Where(_ => _ is StringOutputter)
+                       .ToList()
+                       .ForEach(_ => _.WriteOutput(output));
+        }
         public static void WriteToTextOutputters(object output)
         {
             _Outputters.Where(_ => _ is ITextOutputter)

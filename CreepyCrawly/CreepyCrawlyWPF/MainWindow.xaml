@@ -4,29 +4,41 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CreepyCrawlyWPF"
+        xmlns:cmd="clr-namespace:CreepyCrawlyWPF.Commands"
         mc:Ignorable="d"
-        Title="Creepy Crawly" Height="450" Width="800">
+        Title="Creepy Crawly" Height="800" Width="1200">
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding NewFileCommand}"></KeyBinding>
+        <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenFileCommand}"></KeyBinding>
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Menu>
+        <Menu Margin="0,0,0,0">
             <MenuItem Header="File" HorizontalAlignment="Left">
-                <MenuItem Header="New" InputGestureText="Ctrl+N"></MenuItem>
-                <MenuItem Header="Open" InputGestureText="Ctrl+O"></MenuItem>
-                <MenuItem Header="Save" InputGestureText="Ctrl+S"></MenuItem>
+                <MenuItem Header="New" InputGestureText="Ctrl+N" Command="{Binding NewFileCommand}"></MenuItem>
+                <MenuItem Header="Open" InputGestureText="Ctrl+O" Command="{Binding OpenFileCommand}"></MenuItem>
+                <MenuItem Header="Save" InputGestureText="Ctrl+S" Command="{Binding SaveFileCommand}"></MenuItem>
                 <MenuItem Header="Save as..."></MenuItem>
                 <Separator></Separator>
                 <MenuItem Header="Exit"></MenuItem>
             </MenuItem>
             <MenuItem Header="Running" HorizontalAlignment="Left">
-                <MenuItem Header="Run" InputGestureText="F5"></MenuItem>
+                <MenuItem Header="Run" InputGestureText="F5" Command="{Binding RunScriptCommand}"></MenuItem>
             </MenuItem>
             <MenuItem Header="Help" HorizontalAlignment="Left">
-                <MenuItem Header="About"></MenuItem>
+                <MenuItem Name="mi_about" Header="About" Click="mi_about_Click"></MenuItem>
             </MenuItem>
         </Menu>
+        <TabControl Name="tbc_mainPanel" Grid.Row="1" ItemsSource="{Binding OpenedTabs}" SelectedItem="{Binding SelectedTab}">
+            <TabControl.Background>
+                <ImageBrush ImageSource="Images/CreppyCrawlyIconTransp.png" Stretch="Uniform"/>
+            </TabControl.Background>
+
+        </TabControl>
 
     </Grid>
 </Window>

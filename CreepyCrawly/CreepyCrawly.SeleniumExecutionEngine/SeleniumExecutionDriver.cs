@@ -20,12 +20,18 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             _RunHeadless = runHeadless;
             _DisableWebSecurity = disableWebSecurity;
+            SetOptions();
         }
         public SeleniumExecutionDriver(string driverPath) : this()
         {
             DriverPath = driverPath;
+            SetOptions();
         }
         private SeleniumExecutionDriver()
+        {
+            SetOptions();
+        }
+        private void SetOptions()
         {
             _ChromeOptions = new ChromeOptions();
             if (_RunHeadless)
@@ -38,7 +44,9 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             try
             {
-                var service = ChromeDriverService.CreateDefaultService(DriverPath);
+                string chromedriverName = new Uri(DriverPath).LocalPath;
+                string pathToDriverDir = new Uri(new Uri(DriverPath), ".").AbsolutePath;
+                var service = ChromeDriverService.CreateDefaultService(DriverPath, chromedriverName);
                 service.HideCommandPromptWindow = true;
                 service.SuppressInitialDiagnosticInformation = true;
                 Driver = new ChromeDriver(service, _ChromeOptions);

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CreepyCrawlyWPF.Controls;
+using CreepyCrawlyWPF.ViewModels;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +23,20 @@ namespace CreepyCrawlyWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainWindowViewModel _ViewModel; 
         public MainWindow()
         {
+            _ViewModel = new MainWindowViewModel();
+            DataContext = _ViewModel;
             InitializeComponent();
         }
+
+        private void mi_about_Click(object sender, RoutedEventArgs e)
+        {
+            AboutWindow aboutWindow = new AboutWindow();
+            aboutWindow.Owner = this;
+            aboutWindow.ShowDialog();
+        }
+
     }
 }
