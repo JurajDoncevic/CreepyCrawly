@@ -27,17 +27,21 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         }
         private SeleniumExecutionDriver()
         {
+        }
+
+        private void SetOptions()
+        {
             _ChromeOptions = new ChromeOptions();
             if (_RunHeadless)
                 _ChromeOptions.AddArgument("headless");
             if (_DisableWebSecurity)
                 _ChromeOptions.AddArgument("disable-web-security");
         }
-
         public void StartDriver()
         {
             try
             {
+                SetOptions();
                 var service = ChromeDriverService.CreateDefaultService(DriverPath);
                 service.HideCommandPromptWindow = true;
                 service.SuppressInitialDiagnosticInformation = true;
