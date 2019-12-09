@@ -30,13 +30,13 @@ namespace CreepyCrawlyWPF.ViewModels
         {
             var scriptTab = new ScriptTab("New file", new ScriptPage(""), CloseTab);
             OpenedTabs.Add(scriptTab);
-            SelectedTab = scriptTab;
+            SelectedTab = OpenedTabs[OpenedTabs.Count - 1];
         }
         public void OpenNewFileTab(string filePath, string fileName)
         {
             var scriptTab = new ScriptTab(fileName, new ScriptPage(filePath), CloseTab);
             OpenedTabs.Add(scriptTab);
-            SelectedTab = scriptTab;
+            SelectedTab = OpenedTabs[OpenedTabs.Count - 1];
         }
         public void OpenFile()
         {
