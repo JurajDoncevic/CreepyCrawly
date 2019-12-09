@@ -4,6 +4,7 @@ ON ROOT 'http://books.toscrape.com/' DO {
             EXTRACT_TEXT '#content_inner > article > div.row > div.col-sm-6.product_main > h1';
             EXTRACT_TEXT '#content_inner > article > div.row > div.col-sm-6.product_main > p.price_color';
             EXTRACT_IMAGE '#product_gallery > div > div > div > img';
+            /*comment 1234*/
         }
     } WHILE_CLICK 'li.next > a';
 }
