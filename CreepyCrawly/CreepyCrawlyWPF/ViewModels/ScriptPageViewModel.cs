@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CreepyCrawlyWPF.ViewModels
@@ -26,6 +27,10 @@ namespace CreepyCrawlyWPF.ViewModels
         public ClearInputStringCommand ClearOutputTextFilePathCommand { get; set; }
         public ClearInputStringCommand ClearOutputImageDirectoryPathCommand { get; set; }
         public ClearInputStringCommand ClearWebDriverPathCommand { get; set; }
+        public StopScriptCommand StopScriptCommand { get; set; }
+        private Task _ScriptRunTask;
+        private CancellationTokenSource _CancellationTokenSource;
+
         public ScriptPageViewModel(string filePath)
         {
             FilePath = filePath;
@@ -39,6 +44,7 @@ namespace CreepyCrawlyWPF.ViewModels
             ClearOutputTextFilePathCommand = new ClearInputStringCommand(ClearOutputTextFilePath);
             ClearOutputImageDirectoryPathCommand = new ClearInputStringCommand(ClearOutputImageDirectoryPath);
             ClearWebDriverPathCommand = new ClearInputStringCommand(ClearWebDriverPath);
+            StopScriptCommand = new StopScriptCommand(StopScript);
             
             TryOpenSelf();
         }
@@ -126,21 +132,39 @@ namespace CreepyCrawlyWPF.ViewModels
             RunOptions.WebDriverPath = "";
         }
 
+        public void StopScript()
+        {
+            if(_ScriptRunTask != null && _ScriptRunTask.Status == TaskStatus.Running)
+            {
+                _CancellationTokenSource.Cancel();
+
+                SendMessageToOutputDisplay("Run cancelled by user!");
+                
+            }
+
+        }
+        public void SendMessageToOutputDisplay(string message)
+        {
+            OutputDisplay += message + "\n";
+        }
         public void RunScript()
         {
             ErrorsDisplay = "";
             OutputDisplay = "";
-            using (ScriptRunner runner = new ScriptRunner(RunOptions, (o, e) => { OutputDisplay += e.Output + "\n"; }))
-            {
+            _CancellationTokenSource = new CancellationTokenSource();
+            var token = _CancellationTokenSource.Token;
 
-                Task.Run(() =>
-               {
+            using (ScriptRunner runner = new ScriptRunner(RunOptions, (o, e) => { SendMessageToOutputDisplay(e.Output); }))
+            {
+                token.Register(runner.StopScript);
+                _ScriptRunTask = Task.Run(() =>
+                {
                    runner.StartScript(ScriptText);
                    if (runner.ErrorMessages.Count != 0)
                    {
                        ErrorsDisplay = runner.ErrorMessages.Aggregate((_1, _2) => _1 + "\n" + _2);
                    }
-               });
+                }, token);
             }
         }
     }

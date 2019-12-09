@@ -17,6 +17,7 @@ namespace CreepyCrawlyWPF.ViewModels
         public RunScriptCommand RunScriptCommand { get; set; }
         public ObservableCollection<ScriptTab> OpenedTabs { get; set; }
         public ScriptTab SelectedTab { get; set; }
+
         public MainWindowViewModel()
         {
             OpenedTabs = new ObservableCollection<ScriptTab>();

@@ -19,23 +19,27 @@ namespace CreepyCrawlyWPF.ScriptRunning
         private CrawlLangEngine _CrawlLangEngine;
         public event PropertyChangedEventHandler PropertyChanged;
         private EventHandler<NewOutputAppearedEventArgs> _OutputEventHandler;
+        private SeleniumExecutionEngine _SeleniumExecutionEngine;
+        private bool IsRunning = false;
 
         public ScriptRunner(RunOptions runOptions, EventHandler<NewOutputAppearedEventArgs> outputEventHandler)
         {
             RunOptions = runOptions;
             _OutputEventHandler = outputEventHandler;
         }
-        public async Task StartScript(string scriptText)
+        public void StartScript(string scriptText)
         {
+            IsRunning = true;
             if (TryRunLangEngine(scriptText))
             {
                 try
                 {
-                    using (SeleniumExecutionEngine executionEngine = new SeleniumExecutionEngine(RunOptions.WebDriverPath, new SeleniumExecutionEngineOptions() { DisableWebSecurity = RunOptions.DisableWebSecurity, RunHeadlessBrowser = RunOptions.NoBrowser }))
+                    using (_SeleniumExecutionEngine = new SeleniumExecutionEngine(RunOptions.WebDriverPath, new SeleniumExecutionEngineOptions() { DisableWebSecurity = RunOptions.DisableWebSecurity, RunHeadlessBrowser = RunOptions.NoBrowser }))
                     {
-                        executionEngine.StartEngine();
-                        ExecutionPlan plan = SeleniumExecutionPlanFactory.GenerateExecutionPlan(_CrawlLangEngine.StartingContext, executionEngine);
-
+                        
+                        _SeleniumExecutionEngine.StartEngine();
+                        ExecutionPlan plan = SeleniumExecutionPlanFactory.GenerateExecutionPlan(_CrawlLangEngine.StartingContext, _SeleniumExecutionEngine);
+                        OutputSingleton.ClearAllOutputters();
                         if (!string.IsNullOrWhiteSpace(RunOptions.OutputFilePath))
                         {
                             CreepyCrawly.Output.OutputSingleton.CreateFileTextOutputter(RunOptions.OutputFilePath);
@@ -46,7 +50,7 @@ namespace CreepyCrawlyWPF.ScriptRunning
                         }
                         CreepyCrawly.Output.OutputSingleton.CreateStringOutputter();
                         CreepyCrawly.Output.OutputSingleton.AssignEventHandlerToStringOutputters(_OutputEventHandler);
-                        if (executionEngine.IsEngineOk)
+                        if (_SeleniumExecutionEngine.IsEngineOk)
                         {
                             plan.Commands.ForEach(cmd =>
                             {
@@ -61,7 +65,8 @@ namespace CreepyCrawlyWPF.ScriptRunning
                 }
                 catch (Exception e)
                 {
-                    CreepyCrawly.Output.OutputSingleton.WriteToStringOutputters(string.Format("An error occurred during script execution with message:\n{0}\nSee the following stacktrace:\n{1}", e.Message, e.StackTrace));
+                    if(IsRunning)
+                        CreepyCrawly.Output.OutputSingleton.WriteToStringOutputters(string.Format("An error occurred during script execution with message:\n{0}\nSee the following stacktrace:\n{1}", e.Message, e.StackTrace));
                 }
             }
         }
@@ -72,6 +77,16 @@ namespace CreepyCrawlyWPF.ScriptRunning
             ErrorMessages = _CrawlLangEngine.Errors;
             return !_CrawlLangEngine.HasErrors;
         }
+
+        public void StopScript()
+        {
+            if(_SeleniumExecutionEngine != null)
+            {
+                IsRunning = false;
+                _SeleniumExecutionEngine.StopEngine();
+            }
+        }
+
         public void Dispose()
         {
 

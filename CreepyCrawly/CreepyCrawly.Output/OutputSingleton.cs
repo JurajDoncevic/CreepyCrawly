@@ -52,5 +52,9 @@ namespace CreepyCrawly.Output
                        .ToList()
                        .ForEach(_ => _.WriteOutput(output));
         }
+        public static void ClearAllOutputters()
+        {
+            _Outputters = new List<IOutputter>();
+        }
     }
 }

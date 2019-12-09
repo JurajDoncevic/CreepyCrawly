@@ -12,6 +12,7 @@
     <None Remove="Images\CreppyCrawlyIconTransp.png" />
     <None Remove="Images\CreppyCrawlyTranspImg.png" />
     <None Remove="Images\Run.png" />
+    <None Remove="Images\Stop.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +28,7 @@
     <Resource Include="Images\Run.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Stop.png" />
   </ItemGroup>
 
   <ItemGroup>
