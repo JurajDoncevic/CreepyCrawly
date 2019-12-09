@@ -4,11 +4,13 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Images\CreppyCrawlyIconTransp.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Images\Clear.png" />
     <None Remove="Images\Close.png" />
+    <None Remove="Images\CreppyCrawlyIconTransp.ico" />
     <None Remove="Images\CreppyCrawlyIconTransp.png" />
     <None Remove="Images\CreppyCrawlyTranspImg.png" />
     <None Remove="Images\Run.png" />
@@ -23,6 +25,7 @@
   <ItemGroup>
     <Resource Include="Images\Clear.png" />
     <Resource Include="Images\Close.png" />
+    <Resource Include="Images\CreppyCrawlyIconTransp.ico" />
     <Resource Include="Images\CreppyCrawlyIconTransp.png" />
     <Resource Include="Images\CreppyCrawlyTranspImg.png" />
     <Resource Include="Images\Run.png">

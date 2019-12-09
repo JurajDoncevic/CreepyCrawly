@@ -165,6 +165,7 @@ namespace CreepyCrawlyWPF.ViewModels
                        ErrorsDisplay = runner.ErrorMessages.Aggregate((_1, _2) => _1 + "\n" + _2);
                    }
                 }, token);
+                
             }
         }
     }
