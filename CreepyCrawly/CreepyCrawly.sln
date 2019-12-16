@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.LanguageDefini
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.LanguageEngine", "CreepyCrawly.LanguageEngine\CreepyCrawly.LanguageEngine.csproj", "{D104D348-3FD5-41B3-A867-75A2ED724851}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.SeleniumExecutionEngine", "CreepyCrawly.SeleniumExecutionEngine\CreepyCrawly.SeleniumExecutionEngine.csproj", "{CEA89961-78A3-4B12-89EC-9AC761DD8AB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.SeleniumExecution", "CreepyCrawly.SeleniumExecutionEngine\CreepyCrawly.SeleniumExecution.csproj", "{CEA89961-78A3-4B12-89EC-9AC761DD8AB5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.ExecutionPlanning", "CreepyCrawly.ExecutionPlanning\CreepyCrawly.ExecutionPlanning.csproj", "{4D1AE20D-B1D1-42DB-84FE-A55967152FB4}"
 EndProject
@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.Utils", "Creep
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.WPFApp", "CreepyCrawly.WPFApp\CreepyCrawly.WPFApp.csproj", "{30CE6960-4054-49A7-BB5B-87851A4748F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreepyCrawly.ConsoleApp", "CreepyCrawly.ConsoleApp\CreepyCrawly.ConsoleApp.csproj", "{77B44B99-51EF-4D0A-982C-0ABA883628C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.ConsoleApp", "CreepyCrawly.ConsoleApp\CreepyCrawly.ConsoleApp.csproj", "{77B44B99-51EF-4D0A-982C-0ABA883628C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreepyCrawly.Core", "CreepyCrawly.Core\CreepyCrawly.Core.csproj", "{77F02501-E006-49B6-9378-106C159B4F90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{77B44B99-51EF-4D0A-982C-0ABA883628C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77B44B99-51EF-4D0A-982C-0ABA883628C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77B44B99-51EF-4D0A-982C-0ABA883628C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77F02501-E006-49B6-9378-106C159B4F90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77F02501-E006-49B6-9378-106C159B4F90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77F02501-E006-49B6-9378-106C159B4F90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77F02501-E006-49B6-9378-106C159B4F90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

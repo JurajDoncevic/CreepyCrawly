@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CreepyCrawly.SeleniumExecutionEngine
+namespace CreepyCrawly.SeleniumExecution
 {
     public class SeleniumExecutionEngineOptions
     {

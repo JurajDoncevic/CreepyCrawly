@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CreepyCrawly.LanguageDefinition\CreepyCrawly.LanguageDefinition.csproj" />
     <ProjectReference Include="..\CreepyCrawly.Output\CreepyCrawly.Output.csproj" />
-    <ProjectReference Include="..\CreepyCrawly.SeleniumExecutionEngine\CreepyCrawly.SeleniumExecutionEngine.csproj" />
+    <ProjectReference Include="..\CreepyCrawly.SeleniumExecutionEngine\CreepyCrawly.SeleniumExecution.csproj" />
     <ProjectReference Include="..\CreepyCrawly.Utils\CreepyCrawly.Utils.csproj" />
   </ItemGroup>
 

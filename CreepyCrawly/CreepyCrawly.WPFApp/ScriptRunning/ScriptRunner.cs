@@ -2,7 +2,7 @@
 using CreepyCrawly.ExecutionPlanning.Model;
 using CreepyCrawly.LanguageEngine;
 using CreepyCrawly.Output;
-using CreepyCrawly.SeleniumExecutionEngine;
+using CreepyCrawly.SeleniumExecution;
 using CreepyCrawly.WPFApp.Options;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace CreepyCrawly.WPFApp.ScriptRunning
         private CrawlLangEngine _CrawlLangEngine;
         public event PropertyChangedEventHandler PropertyChanged;
         private EventHandler<NewOutputAppearedEventArgs> _OutputEventHandler;
-        private SeleniumExecutionEngine.SeleniumExecutionEngine _SeleniumExecutionEngine;
+        private SeleniumExecution.SeleniumExecutionEngine _SeleniumExecutionEngine;
         private bool IsRunning = false;
 
         public ScriptRunner(RunOptions runOptions, EventHandler<NewOutputAppearedEventArgs> outputEventHandler)
@@ -34,7 +34,7 @@ namespace CreepyCrawly.WPFApp.ScriptRunning
             {
                 try
                 {
-                    using (_SeleniumExecutionEngine = new SeleniumExecutionEngine.SeleniumExecutionEngine(RunOptions.WebDriverPath, new SeleniumExecutionEngineOptions() { DisableWebSecurity = RunOptions.DisableWebSecurity, RunHeadlessBrowser = RunOptions.NoBrowser }))
+                    using (_SeleniumExecutionEngine = new SeleniumExecution.SeleniumExecutionEngine(RunOptions.WebDriverPath, new SeleniumExecutionEngineOptions() { DisableWebSecurity = RunOptions.DisableWebSecurity, RunHeadlessBrowser = RunOptions.NoBrowser }))
                     {
                         
                         _SeleniumExecutionEngine.StartEngine();

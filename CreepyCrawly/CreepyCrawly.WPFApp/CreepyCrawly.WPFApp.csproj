@@ -43,7 +43,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CreepyCrawly.ExecutionPlanning\CreepyCrawly.ExecutionPlanning.csproj" />
     <ProjectReference Include="..\CreepyCrawly.LanguageEngine\CreepyCrawly.LanguageEngine.csproj" />
-    <ProjectReference Include="..\CreepyCrawly.SeleniumExecutionEngine\CreepyCrawly.SeleniumExecutionEngine.csproj" />
+    <ProjectReference Include="..\CreepyCrawly.SeleniumExecutionEngine\CreepyCrawly.SeleniumExecution.csproj" />
   </ItemGroup>
 
 </Project>

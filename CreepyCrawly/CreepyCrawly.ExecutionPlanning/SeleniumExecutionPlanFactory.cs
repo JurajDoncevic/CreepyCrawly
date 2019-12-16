@@ -1,5 +1,5 @@
 ﻿using CreepyCrawly.ExecutionPlanning.Model;
-using CreepyCrawly.SeleniumExecutionEngine;
+using CreepyCrawly.SeleniumExecution;
 using System;
 using System.Collections.Generic;
 using static CreepyCrawly.LanguageDefinition.CrawlLangParser;
@@ -10,7 +10,7 @@ namespace CreepyCrawly.ExecutionPlanning
 {
     public class SeleniumExecutionPlanFactory
     {
-        public static ExecutionPlan GenerateExecutionPlan(ProgContext context, SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine)
+        public static ExecutionPlan GenerateExecutionPlan(ProgContext context, SeleniumExecution.SeleniumExecutionEngine executionEngine)
         {
             List<ICommand> commands = new List<ICommand>();
             string rootUrl = context.on_root_command().www_url().TEXT().GetText().Trim('\'');
@@ -41,7 +41,7 @@ namespace CreepyCrawly.ExecutionPlanning
             return new ExecutionPlan(commands, rootUrl);
         }
 
-        private static IComplexCommand GetComplexCommand(Complex_commandContext ctx, SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine)
+        private static IComplexCommand GetComplexCommand(Complex_commandContext ctx, SeleniumExecution.SeleniumExecutionEngine executionEngine)
         {
             List<ICommand> commands = new List<ICommand>();
             if (ctx.GetText().StartsWith("FOREACH_CLICK"))
@@ -208,7 +208,7 @@ namespace CreepyCrawly.ExecutionPlanning
             }
         }
 
-        private static ISimpleCommand GetSimpleCommand(Simple_commandContext ctx, SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine)
+        private static ISimpleCommand GetSimpleCommand(Simple_commandContext ctx, SeleniumExecution.SeleniumExecutionEngine executionEngine)
         {
             if (ctx.GetText().StartsWith("INPUT"))
             {

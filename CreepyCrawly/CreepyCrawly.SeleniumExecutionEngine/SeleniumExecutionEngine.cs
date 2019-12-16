@@ -5,11 +5,12 @@ using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+using CreepyCrawly.Core;
 
-namespace CreepyCrawly.SeleniumExecutionEngine
+namespace CreepyCrawly.SeleniumExecution
 {
 
-    public class SeleniumExecutionEngine : IDisposable
+    public class SeleniumExecutionEngine : IExecutionEngine, IDisposable
     {
         private Stack<string> _WindowContextStack = new Stack<string>();
         private Stack<Queue<IWebElement>> _ClickIterationStack = new Stack<Queue<IWebElement>>();
@@ -164,16 +165,17 @@ namespace CreepyCrawly.SeleniumExecutionEngine
         {
             string retVal = null;
             _ExecutionDriver.OpenNewDuplicateTab();
-            try { 
-            _ExecutionDriver.SwitchToLastTab();
-
-            IWebElement element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
-            if(element != null)
+            try
             {
-                string srcUrl = element.GetAttribute("src");
-                _ExecutionDriver.Driver.Url = srcUrl;
+                _ExecutionDriver.SwitchToLastTab();
 
-                string scriptText = string.Format(@"
+                IWebElement element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
+                if (element != null)
+                {
+                    string srcUrl = element.GetAttribute("src");
+                    _ExecutionDriver.Driver.Url = srcUrl;
+
+                    string scriptText = string.Format(@"
                                     var c = document.createElement('canvas');
                                     var ctx = c.getContext('2d');
                                     var img = document.querySelector('img');
@@ -185,10 +187,10 @@ namespace CreepyCrawly.SeleniumExecutionEngine
                                     return b64;
                                     ", selector);
 
-                var base64string = _ExecutionDriver.Driver.ExecuteScript(scriptText) as string;
-                string[] split = base64string.Split(',');
-                retVal = split[split.Length - 1];
-            }
+                    var base64string = _ExecutionDriver.Driver.ExecuteScript(scriptText) as string;
+                    string[] split = base64string.Split(',');
+                    retVal = split[split.Length - 1];
+                }
             }
             catch
             {

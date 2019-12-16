@@ -3,7 +3,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using System;
 
-namespace CreepyCrawly.SeleniumExecutionEngine
+namespace CreepyCrawly.SeleniumExecution
 {
     class SeleniumExecutionDriver
     {
