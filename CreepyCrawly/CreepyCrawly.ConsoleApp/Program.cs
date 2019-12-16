@@ -2,7 +2,7 @@
 using CommandLine.Text;
 using CreepyCrawly.ExecutionPlanning;
 using CreepyCrawly.LanguageEngine;
-using CreepyCrawly.SeleniumExecutionEngine;
+using CreepyCrawly.SeleniumExecution;
 using CreepyCrawly.Utils;
 using System;
 using System.Collections.Generic;
@@ -50,7 +50,7 @@ namespace CreepyCrawly.ConsoleApp
                 try
                 {
                     List<object> outputs = new List<object>();
-                    using (SeleniumExecutionEngine.SeleniumExecutionEngine executionEngine = new SeleniumExecutionEngine.SeleniumExecutionEngine())
+                    using (SeleniumExecutionEngine executionEngine = new SeleniumExecutionEngine())
                     {
                         executionEngine.StartEngine();
                         ExecutionPlanning.Model.ExecutionPlan plan = SeleniumExecutionPlanFactory.GenerateExecutionPlan(crawlLangEngine.StartingContext, executionEngine);
