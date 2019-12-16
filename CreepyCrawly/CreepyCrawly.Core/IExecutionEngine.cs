@@ -61,13 +61,13 @@ namespace CreepyCrawly.Core
         /// WAIT_FOR command implementation. Waits an amount of time for an element with given selector to appear/load.
         /// </summary>
         /// <param name="selector">Selector string</param>
-        /// <param name="waitAmount">Amount of time to wait in miliseconds</param>
+        /// <param name="waitAmount">Amount of time to wait in milliseconds</param>
         /// <returns>null</returns>
         object WaitFor(string selector, int waitAmount);
         /// <summary>
         /// WAIT_MS command implementation. Waits an amount of time.
         /// </summary>
-        /// <param name="waitAmount">Amount of time to wait in miliseconds</param>
+        /// <param name="waitAmount">Amount of time to wait in milliseconds</param>
         /// <returns>null</returns>
         object WaitMs(int waitAmount);
         /// <summary>
