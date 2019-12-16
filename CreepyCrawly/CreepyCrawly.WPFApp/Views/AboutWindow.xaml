@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <Label Content="Creepy Crawly" FontWeight="Bold" FontSize="36" HorizontalAlignment="Center" Grid.Row="1"/>
         <Image Source="/Images/CreppyCrawlyTranspImg.png" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10,0,10,0" />
-        <Label Content="WPF version on .NET Core 3.0" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Center"/>
-        <Label Content="Made by Donac (with the loving help of Dinac and Bebi)" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="4" VerticalAlignment="Center"/>
+        <Label Content="WPF version on .NET Core 3.1" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="3" VerticalAlignment="Center"/>
+        
     </Grid>
 </Window>
