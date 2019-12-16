@@ -12,7 +12,10 @@ namespace CreepyCrawlyWPF.Controls
         private Action<ScriptTab> _Close;
         public ScriptTab(string title, ScriptPage scriptPage, Action<ScriptTab> close) : base(title)
         {
-            Content = new Frame().Content = scriptPage;
+            var frame = new Frame();
+            frame.Content = scriptPage;
+            Content = frame;
+           
             ScriptPage = scriptPage;
             _Close = close;
         }

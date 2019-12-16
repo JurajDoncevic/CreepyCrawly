@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CreepyCrawlyWPF.ViewModels
 {
@@ -28,6 +29,7 @@ namespace CreepyCrawlyWPF.ViewModels
         public ClearInputStringCommand ClearOutputImageDirectoryPathCommand { get; set; }
         public ClearInputStringCommand ClearWebDriverPathCommand { get; set; }
         public StopScriptCommand StopScriptCommand { get; set; }
+        public Visibility TaskRunningVisibility { get; set; } = Visibility.Hidden;
         private Task _ScriptRunTask;
         private CancellationTokenSource _CancellationTokenSource;
 
@@ -139,7 +141,7 @@ namespace CreepyCrawlyWPF.ViewModels
                 _CancellationTokenSource.Cancel();
 
                 SendMessageToOutputDisplay("Run cancelled by user!");
-                
+                TaskRunningVisibility = Visibility.Hidden;
             }
 
         }
@@ -159,11 +161,13 @@ namespace CreepyCrawlyWPF.ViewModels
                 token.Register(runner.StopScript);
                 _ScriptRunTask = Task.Run(() =>
                 {
-                   runner.StartScript(ScriptText);
+                    TaskRunningVisibility = Visibility.Visible;
+                    runner.StartScript(ScriptText);
                    if (runner.ErrorMessages.Count != 0)
                    {
                        ErrorsDisplay = runner.ErrorMessages.Aggregate((_1, _2) => _1 + "\n" + _2);
                    }
+                    TaskRunningVisibility = Visibility.Hidden;
                 }, token);
                 
             }
