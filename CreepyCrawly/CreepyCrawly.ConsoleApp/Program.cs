@@ -53,7 +53,7 @@ namespace CreepyCrawly.ConsoleApp
                     using (SeleniumExecutionEngine executionEngine = new SeleniumExecutionEngine())
                     {
                         executionEngine.StartEngine();
-                        ExecutionPlanning.Model.ExecutionPlan plan = SeleniumExecutionPlanFactory.GenerateExecutionPlan(crawlLangEngine.StartingContext, executionEngine);
+                        ExecutionPlanning.Model.ExecutionPlan plan = ExecutionPlanFactory.GenerateExecutionPlan(crawlLangEngine.StartingContext, executionEngine);
                         if (options.WriteToStdout)
                         {
                             CreepyCrawly.Output.OutputSingleton.CreateConsoleTextOutputter();

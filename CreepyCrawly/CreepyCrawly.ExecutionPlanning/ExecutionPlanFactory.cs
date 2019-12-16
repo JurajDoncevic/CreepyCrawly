@@ -8,7 +8,7 @@ using CreepyCrawly.Core;
 
 namespace CreepyCrawly.ExecutionPlanning
 {
-    public class SeleniumExecutionPlanFactory
+    public class ExecutionPlanFactory
     {
         public static ExecutionPlan GenerateExecutionPlan(ProgContext context, IExecutionEngine executionEngine)
         {

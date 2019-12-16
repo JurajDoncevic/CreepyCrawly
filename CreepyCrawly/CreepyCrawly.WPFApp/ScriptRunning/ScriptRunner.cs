@@ -38,7 +38,7 @@ namespace CreepyCrawly.WPFApp.ScriptRunning
                     {
                         
                         _SeleniumExecutionEngine.StartEngine();
-                        ExecutionPlan plan = SeleniumExecutionPlanFactory.GenerateExecutionPlan(_CrawlLangEngine.StartingContext, _SeleniumExecutionEngine);
+                        ExecutionPlan plan = ExecutionPlanFactory.GenerateExecutionPlan(_CrawlLangEngine.StartingContext, _SeleniumExecutionEngine);
                         OutputSingleton.ClearAllOutputters();
                         if (!string.IsNullOrWhiteSpace(RunOptions.OutputFilePath))
                         {
