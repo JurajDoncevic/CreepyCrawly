@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CreepyCrawly.WPFApp
+namespace CreepyCrawly.WPFApp.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

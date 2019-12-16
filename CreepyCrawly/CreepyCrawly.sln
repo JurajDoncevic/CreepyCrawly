@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.WPFApp", "Cree
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.ConsoleApp", "CreepyCrawly.ConsoleApp\CreepyCrawly.ConsoleApp.csproj", "{77B44B99-51EF-4D0A-982C-0ABA883628C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreepyCrawly.Core", "CreepyCrawly.Core\CreepyCrawly.Core.csproj", "{77F02501-E006-49B6-9378-106C159B4F90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.Core", "CreepyCrawly.Core\CreepyCrawly.Core.csproj", "{77F02501-E006-49B6-9378-106C159B4F90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

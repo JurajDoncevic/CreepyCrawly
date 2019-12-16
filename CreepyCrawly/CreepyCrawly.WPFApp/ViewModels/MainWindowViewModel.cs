@@ -1,5 +1,6 @@
 ﻿using CreepyCrawly.WPFApp.Commands;
 using CreepyCrawly.WPFApp.Controls;
+using CreepyCrawly.WPFApp.Views;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
