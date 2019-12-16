@@ -1,0 +1,126 @@
+﻿<Page x:Class="CreepyCrawly.WPFApp.ScriptPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CreepyCrawly.WPFApp"
+      xmlns:ctrls="clr-namespace:CreepyCrawly.WPFApp.Controls"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ScriptPage" Background="White">
+    <Page.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveFileCommand}"></KeyBinding>
+        <KeyBinding Key="F5" Command="{Binding RunScriptCommand}"></KeyBinding>
+    </Page.InputBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0">
+            <ToolBar HorizontalAlignment="Stretch" Grid.Row="0" VerticalAlignment="Stretch">
+                <Button Command="{Binding RunScriptCommand}">
+                    <Image Source="/Images/Run.png" Stretch="UniformToFill" Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Height="15" />
+                </Button>
+                <Button Command="{Binding StopScriptCommand}">
+                    <Image Source="/Images/Stop.png" Stretch="UniformToFill" Width="15" HorizontalAlignment="Center" VerticalAlignment="Center" Height="15"/>
+                </Button>
+                <Label Content="Script running..." Background="{x:Null}" Foreground="#FF13D300" Visibility="{Binding TaskRunningVisibility}"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+            <ctrls:BindableAvalonEditor xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit" x:Name="te_code" FontFamily="Consolas" FontSize="10pt" ShowLineNumbers="True" Margin="0,0,0,5" Text="{Binding ScriptText}"/>
+
+            <ScrollViewer Grid.Row="0" Grid.Column="1" Width="200" MinWidth="160" VerticalScrollBarVisibility="Visible">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition Height="45"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Launch properties" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+                    <CheckBox Content="Disable Web Security" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.Row="1" VerticalAlignment="Center" IsChecked="{Binding RunOptions.DisableWebSecurity}"/>
+                    <CheckBox Content="No Browser" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.Row="2" VerticalAlignment="Center" IsChecked="{Binding RunOptions.NoBrowser}"/>
+                    <Grid Grid.Row="3" Grid.ColumnSpan="2" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                    </Grid>
+                    <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button Content="Set output file" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center"  Command="{Binding SetOutputTextFileCommand}"/>
+                        <TextBox HorizontalAlignment="Stretch" Margin="5,0,0,0" Grid.Row="1" VerticalAlignment="Center" IsReadOnly="True" Text="{Binding RunOptions.OutputFilePath}" />
+                        <Button Grid.Column="1" HorizontalAlignment="Center" Margin="5,5,5,5" Grid.Row="1" VerticalAlignment="Center" Width="18" Height="18" Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding ClearOutputTextFilePathCommand}">
+                            <Image Source="/Images/clear.png"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="4" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button Content="Set image directory" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Command="{Binding SetOutputImageDirectoryCommand}"/>
+                        <TextBox HorizontalAlignment="Stretch" Margin="5,0,0,0" Grid.Row="1" VerticalAlignment="Center" IsReadOnly="True" Text="{Binding RunOptions.ImageOutputDirectory}"/>
+                        <Button Grid.Column="1" HorizontalAlignment="Center" Margin="5,5,5,5" Grid.Row="1" VerticalAlignment="Center" Height="18" Width="18" Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding ClearOutputImageDirectoryPathCommand}">
+                            <Image Source="/Images/clear.png"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="5" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Button Content="Set webdriver path" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Command="{Binding SetWebDriverPathCommand}"/>
+                        <TextBox HorizontalAlignment="Stretch" Margin="5,0,0,0" Grid.Row="1" VerticalAlignment="Center" IsReadOnly="True" Text="{Binding RunOptions.WebDriverPath}"/>
+                        <Button Grid.Column="1" HorizontalAlignment="Center" Margin="5,5,5,5" Grid.Row="1" VerticalAlignment="Center" Height="18" Width="18" Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding ClearWebDriverPathCommand}">
+                            <Image Source="/Images/clear.png"/>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+        <GridSplitter HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Bottom" ResizeDirection="Rows" Height="5" Grid.Row="1" Background="#FFAAAAAA"/>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Output:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"></Label>
+            <TextBox Margin="0,25,0,0" Grid.Column="0" Text="{Binding OutputDisplay, Mode=OneWay}" TextWrapping="Wrap" IsReadOnly="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"/>
+            <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Stretch" ResizeDirection="Columns" Grid.Row="0" Background="#FFAAAAAA" Width="5"/>
+            <Label Grid.Column="1" Content="Errors:" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25"></Label>
+            <TextBox Margin="0,25,0,0" Grid.Column="1" Text="{Binding ErrorsDisplay, Mode=OneWay}" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible" TextWrapping="Wrap" IsReadOnly="True" Foreground="#FFF31212"/>
+        </Grid>
+
+
+
+
+
+    </Grid>
+</Page>
