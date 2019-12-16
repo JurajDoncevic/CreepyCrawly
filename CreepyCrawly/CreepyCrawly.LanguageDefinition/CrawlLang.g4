@@ -19,6 +19,7 @@ SUBMIT_KEYWORD			:	'SUBMIT';
 EXTRACT_IMAGE_KEYWORD	:	'EXTRACT_IMAGE';
 EXTRACT_ALL_IMAGES_KEYWORD	:	'EXTRACT_ALL_IMAGES';
 EXTRACT_TO_CSV_KEYWORD	:	'EXTRACT_TO_CSV';
+EXTRACT_HREF_KEYWORD    :   'EXTRACT_HREF_KEYWORD';
 GOTO_SRC_KEYWORD		:	'GOTO_SRC';
 GOTO_CLICK_KEYWORD		:	'GOTO_CLICK';
 WHILE_CLICK_KEYWORD		:	'WHILE_CLICK';
@@ -84,6 +85,9 @@ extract_all_images_command	:	EXTRACT_ALL_IMAGES_KEYWORD selector SEMICOL
 extract_to_csv_command	:	EXTRACT_TO_CSV_KEYWORD selector(COMMA selector)* SEMICOL
 						;
 
+extract_href_command    :   EXTRACT_HREF_KEYWORD selector SEMICOL
+                        ;
+
 input_command   :   INPUT_KEYWORD selector text_value SEMICOL
                 ;
 
@@ -114,7 +118,7 @@ while_click_command		:	WHILE_CLICK_KEYWORD	selector command_block
 do_while_click_command	:	command_block WHILE_CLICK_KEYWORD selector SEMICOL
 						;
 
-simple_command  :   (click_command|wait_ms_command|extract_text_command|extract_all_images_command|extract_title_command|extract_image_command|extract_to_csv_command|input_command|wait_for_command|select_command|submit_command)
+simple_command  :   (click_command|wait_ms_command|extract_text_command|extract_href_command|extract_all_images_command|extract_title_command|extract_image_command|extract_to_csv_command|input_command|wait_for_command|select_command|submit_command)
                 ;
 
 complex_command :   (foreach_element_command|foreach_click_command|foreach_href_command|goto_src_command|goto_click_command|while_click_command|do_while_click_command)

@@ -62,7 +62,7 @@ namespace CreepyCrawly
                         {
                             CreepyCrawly.Output.OutputSingleton.CreateFileTextOutputter(options.ResultFilePath);
                         }
-                        if (Uri.IsWellFormedUriString(options.ResultFilePath, UriKind.RelativeOrAbsolute))
+                        if (Uri.IsWellFormedUriString(options.ImageDirectoryPath, UriKind.RelativeOrAbsolute))
                         {
                             CreepyCrawly.Output.OutputSingleton.CreateImageFileOutputter(options.ImageDirectoryPath);
                         }

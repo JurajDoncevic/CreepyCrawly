@@ -100,6 +100,11 @@ namespace CreepyCrawly.SeleniumExecutionEngine
             var title = _ExecutionDriver.Driver.Title;
             return title;
         }
+        public string ExtractHref(string selector)
+        {
+            var href = _ExecutionDriver.Driver.FindElementByCssSelector(selector).GetAttribute("href");
+            return href;
+        }
 
         public string[] ExtractAllImages(string selector)
         {

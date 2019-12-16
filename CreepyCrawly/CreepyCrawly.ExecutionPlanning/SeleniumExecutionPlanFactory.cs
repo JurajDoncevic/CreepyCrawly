@@ -291,6 +291,13 @@ namespace CreepyCrawly.ExecutionPlanning
                 ExtractTitleCommand extractCommand = new ExtractTitleCommand(executionEngine.ExtractTitle);
                 return extractCommand;
             }
+            else if (ctx.GetText().StartsWith("EXTRACT_HREF"))
+            {
+                Extract_href_commandContext extract = ctx.extract_href_command();
+                ExtractHrefCommand extractCommand = new ExtractHrefCommand(extract.selector().GetText().Trim('\''),
+                                                                           executionEngine.ExtractHref);
+                return extractCommand;
+            }
             else if (ctx.GetText().StartsWith("EXTRACT_TO_CSV"))
             {
                 Extract_to_csv_commandContext extract = ctx.extract_to_csv_command();
