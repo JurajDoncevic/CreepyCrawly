@@ -58,6 +58,7 @@ namespace CreepyCrawly.ConsoleApp
                     {
                         try
                         {
+                            Console.WriteLine("Starting engine!");
                             executionEngine.StartEngine();
                             if (options.WriteToStdout)
                             {
@@ -71,8 +72,9 @@ namespace CreepyCrawly.ConsoleApp
                             {
                                 CreepyCrawly.Output.OutputSingleton.CreateImageFileOutputter(options.ImageDirectoryPath);
                             }
-                            CreepyCrawly.Output.OutputSingleton.CreateStringOutputter();
-                            CreepyCrawly.Output.OutputSingleton.AssignEventHandlerToStringOutputters(__NewOutputAppeared);
+                            //CreepyCrawly.Output.OutputSingleton.CreateStringOutputter();
+                            //CreepyCrawly.Output.OutputSingleton.AssignEventHandlerToStringOutputters(__NewOutputAppeared);
+                            Console.WriteLine("Starting script execution!");
                             if (executionEngine.IsEngineOk)
                             {
                                 executionPlan.Commands.ForEach(cmd =>
