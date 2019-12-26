@@ -2,7 +2,7 @@
   "profiles": {
     "CreepyCrawly.ConsoleApp": {
       "commandName": "Project",
-      "commandLineArgs": "\\\"../../../../../test12.cl\\\" --stdout --result-file \\\"../../../../../testOutput.txt\\\" --image-dir \\\"../../../../../images\\\""
+      "commandLineArgs": "./../../../../../\"Test scripts\"/test15.cl --stdout "
     }
   }
 }

@@ -10,7 +10,7 @@ namespace CreepyCrawly.SeleniumExecution
         public bool IsDriverRunning { get; private set; } = false;
         public ChromeDriver Driver { get; private set; }
         public string CurrentTab { get; private set; }
-        public string DriverPath { get; private set; } = "./";
+        public string DriverPath { get; private set; } = "./chromedriver.exe";
 
         private bool _RunHeadless = false;
         private bool _DisableWebSecurity = false;
@@ -44,9 +44,10 @@ namespace CreepyCrawly.SeleniumExecution
         {
             try
             {
-                string chromedriverName = new Uri(DriverPath).LocalPath;
-                string pathToDriverDir = new Uri(new Uri(DriverPath), ".").AbsolutePath;
-                var service = ChromeDriverService.CreateDefaultService(DriverPath, chromedriverName);
+                string chromedriverName = System.IO.Path.GetFileName(DriverPath);
+                string chromedriverDir = DriverPath.Replace(chromedriverName, "");
+                //string pathToDriverDir = new Uri(new Uri(DriverPath), ".").AbsolutePath;
+                var service = ChromeDriverService.CreateDefaultService(chromedriverDir, chromedriverName);
                 service.HideCommandPromptWindow = true;
                 service.SuppressInitialDiagnosticInformation = true;
                 Driver = new ChromeDriver(service, _ChromeOptions);

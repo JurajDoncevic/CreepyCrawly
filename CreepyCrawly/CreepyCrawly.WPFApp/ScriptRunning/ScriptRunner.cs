@@ -1,6 +1,5 @@
-﻿using CreepyCrawly.ExecutionPlanning;
-using CreepyCrawly.ExecutionPlanning.Model;
-using CreepyCrawly.LanguageEngine;
+﻿using CreepyCrawly.LanguageEngine;
+using CreepyCrawly.LanguageEngine.CommandModel;
 using CreepyCrawly.Output;
 using CreepyCrawly.SeleniumExecution;
 using CreepyCrawly.WPFApp.Options;
@@ -26,19 +25,26 @@ namespace CreepyCrawly.WPFApp.ScriptRunning
         {
             RunOptions = runOptions;
             _OutputEventHandler = outputEventHandler;
+            ErrorMessages = new List<string>();
         }
         public void StartScript(string scriptText)
         {
-            IsRunning = true;
-            if (TryRunLangEngine(scriptText))
+            using (_SeleniumExecutionEngine = new SeleniumExecution.SeleniumExecutionEngine(RunOptions.WebDriverPath, new SeleniumExecutionEngineOptions() { DisableWebSecurity = RunOptions.DisableWebSecurity, RunHeadlessBrowser = RunOptions.NoBrowser }))
             {
-                try
+                _CrawlLangEngine = new CrawlLangEngine(scriptText, _SeleniumExecutionEngine);
+                _CrawlLangEngine.ParseScript();
+                if (_CrawlLangEngine.HasErrors)
                 {
-                    using (_SeleniumExecutionEngine = new SeleniumExecution.SeleniumExecutionEngine(RunOptions.WebDriverPath, new SeleniumExecutionEngineOptions() { DisableWebSecurity = RunOptions.DisableWebSecurity, RunHeadlessBrowser = RunOptions.NoBrowser }))
+                    ErrorMessages = _CrawlLangEngine.Errors;
+                }
+                else
+                {
+                    ExecutionPlan plan = _CrawlLangEngine.GenerateExecutionPlan();
+                    try
                     {
-                        
                         _SeleniumExecutionEngine.StartEngine();
-                        ExecutionPlan plan = ExecutionPlanFactory.GenerateExecutionPlan(_CrawlLangEngine.StartingContext, _SeleniumExecutionEngine);
+                        
+                        IsRunning = true;
                         OutputSingleton.ClearAllOutputters();
                         if (!string.IsNullOrWhiteSpace(RunOptions.OutputFilePath))
                         {
@@ -62,25 +68,18 @@ namespace CreepyCrawly.WPFApp.ScriptRunning
                             CreepyCrawly.Output.OutputSingleton.WriteToStringOutputters("Engine wasn't started :(\nMaybe you are missing an appropriate chromedriver in the app root directory.");
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    if(IsRunning)
-                        CreepyCrawly.Output.OutputSingleton.WriteToStringOutputters(string.Format("An error occurred during script execution with message:\n{0}\nSee the following stacktrace:\n{1}", e.Message, e.StackTrace));
+                    catch (Exception e)
+                    {
+                        if (IsRunning)
+                            CreepyCrawly.Output.OutputSingleton.WriteToStringOutputters(string.Format("An error occurred during script execution with message:\n{0}\nSee the following stacktrace:\n{1}", e.Message, e.StackTrace));
+                    }
                 }
             }
         }
 
-        private bool TryRunLangEngine(string scriptText)
-        {
-            _CrawlLangEngine = new CrawlLangEngine(scriptText);
-            ErrorMessages = _CrawlLangEngine.Errors;
-            return !_CrawlLangEngine.HasErrors;
-        }
-
         public void StopScript()
         {
-            if(_SeleniumExecutionEngine != null)
+            if (_SeleniumExecutionEngine != null)
             {
                 IsRunning = false;
                 _SeleniumExecutionEngine.StopEngine();

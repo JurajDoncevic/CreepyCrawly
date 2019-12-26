@@ -1,7 +1,7 @@
 ﻿using CommandLine;
 using CommandLine.Text;
-using CreepyCrawly.ExecutionPlanning;
 using CreepyCrawly.LanguageEngine;
+using CreepyCrawly.LanguageEngine.CommandModel;
 using CreepyCrawly.SeleniumExecution;
 using CreepyCrawly.Utils;
 using System;
@@ -37,63 +37,69 @@ namespace CreepyCrawly.ConsoleApp
                 Console.Error.WriteLine("An error occurred during opening of file:\n{0}\nSee the following stacktrace:\n{1}", e.Message, e.StackTrace);
                 CloseApp();
             }
-
-            CrawlLangEngine crawlLangEngine = new CrawlLangEngine(scriptText);
-            if (crawlLangEngine.HasErrors)
+            using (SeleniumExecutionEngine executionEngine = new SeleniumExecutionEngine(options.ChromeDriverPath, CreateEngineOptions(options)))
             {
-                Console.Error.WriteLine("Found {0} error(s)!", crawlLangEngine.Errors.Count.ToString());
-                crawlLangEngine.Errors.ForEach(err => Console.Error.WriteLine(err));
-            }
-            else
-            {
-                Console.WriteLine("Script seems OK, starting execution!");
-                try
+                CrawlLangEngine crawlLangEngine = new CrawlLangEngine(scriptText, executionEngine);
+                crawlLangEngine.ParseScript();
+                if (crawlLangEngine.HasErrors)
                 {
-                    List<object> outputs = new List<object>();
-                    using (SeleniumExecutionEngine executionEngine = new SeleniumExecutionEngine())
+                    Console.Error.WriteLine("Found {0} error(s)!", crawlLangEngine.Errors.Count.ToString());
+                    crawlLangEngine.Errors.ForEach(err => Console.Error.WriteLine(err));
+                }
+                else
+                {
+                    Console.WriteLine("Script seems OK, generating plan!");
+                    ExecutionPlan executionPlan = crawlLangEngine.GenerateExecutionPlan();
+                    if(executionPlan == null)
                     {
-                        executionEngine.StartEngine();
-                        ExecutionPlanning.Model.ExecutionPlan plan = ExecutionPlanFactory.GenerateExecutionPlan(crawlLangEngine.StartingContext, executionEngine);
-                        if (options.WriteToStdout)
+                        Console.Error.WriteLine("Could not generate an execution plan :(");
+                    }
+                    else
+                    {
+                        try
                         {
-                            CreepyCrawly.Output.OutputSingleton.CreateConsoleTextOutputter();
-                        }
-                        if (Uri.IsWellFormedUriString(options.ResultFilePath, UriKind.RelativeOrAbsolute))
-                        {
-                            CreepyCrawly.Output.OutputSingleton.CreateFileTextOutputter(options.ResultFilePath);
-                        }
-                        if (Uri.IsWellFormedUriString(options.ImageDirectoryPath, UriKind.RelativeOrAbsolute))
-                        {
-                            CreepyCrawly.Output.OutputSingleton.CreateImageFileOutputter(options.ImageDirectoryPath);
-                        }
-                        CreepyCrawly.Output.OutputSingleton.CreateStringOutputter();
-                        CreepyCrawly.Output.OutputSingleton.AssignEventHandlerToStringOutputters(__NewOutputAppeared);
-                        if (executionEngine.IsEngineOk)
-                        {
-                            plan.Commands.ForEach(cmd =>
+                            executionEngine.StartEngine();
+                            if (options.WriteToStdout)
                             {
-                                cmd.Execute();
-                            });
+                                CreepyCrawly.Output.OutputSingleton.CreateConsoleTextOutputter();
+                            }
+                            if (Uri.IsWellFormedUriString(options.ResultFilePath, UriKind.RelativeOrAbsolute))
+                            {
+                                CreepyCrawly.Output.OutputSingleton.CreateFileTextOutputter(options.ResultFilePath);
+                            }
+                            if (Uri.IsWellFormedUriString(options.ImageDirectoryPath, UriKind.RelativeOrAbsolute))
+                            {
+                                CreepyCrawly.Output.OutputSingleton.CreateImageFileOutputter(options.ImageDirectoryPath);
+                            }
+                            CreepyCrawly.Output.OutputSingleton.CreateStringOutputter();
+                            CreepyCrawly.Output.OutputSingleton.AssignEventHandlerToStringOutputters(__NewOutputAppeared);
+                            if (executionEngine.IsEngineOk)
+                            {
+                                executionPlan.Commands.ForEach(cmd =>
+                                {
+                                    cmd.Execute();
+                                });
+                            }
+                            else
+                            {
+                                Console.Error.WriteLine("Engine wasn't started :(\nMaybe you are missing an appropriate chromedriver in the app root directory.");
+                            }
+
                         }
-                        else
+                        catch (Exception e)
                         {
-                            Console.Error.WriteLine("Engine wasn't started :(\nMaybe you are missing an appropriate chromedriver in the app root directory.");
+                            Console.Error.WriteLine("An error occurred during script execution with message:\n{0}\nSee the following stacktrace:\n{1}", e.Message, e.StackTrace);
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    Console.Error.WriteLine("An error occurred during script execution with message:\n{0}\nSee the following stacktrace:\n{1}", e.Message, e.StackTrace);
-                }
 
-
+                }
             }
             CloseApp();
         }
 
         private static void __NewOutputAppeared(object sender, Output.NewOutputAppearedEventArgs e)
         {
-            Console.WriteLine("STRING WRITER SAYS = " + e.Output + "AT:" +e.TimeAppeared.ToString());
+            Console.WriteLine("STRING WRITER SAYS = " + e.Output + "AT:" + e.TimeAppeared.ToString());
         }
 
         public static void CloseApp()

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CreepyCrawly.Core\CreepyCrawly.Core.csproj" />
     <ProjectReference Include="..\CreepyCrawly.LanguageDefinition\CreepyCrawly.LanguageDefinition.csproj" />
+    <ProjectReference Include="..\CreepyCrawly.Output\CreepyCrawly.Output.csproj" />
+    <ProjectReference Include="..\CreepyCrawly.Utils\CreepyCrawly.Utils.csproj" />
   </ItemGroup>
 
 </Project>

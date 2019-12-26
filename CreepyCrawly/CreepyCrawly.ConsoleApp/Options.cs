@@ -32,6 +32,9 @@ namespace CreepyCrawly.ConsoleApp
         [Option("disable-web-sec", HelpText = "Disable chromedriver's security option.", Default = false, Required = false)]
         public bool DisableWebSecurity { get; set; }
 
+        [Option("chrome-driver-path", HelpText = "Path to chromedriver.exe", Default = "./chromedriver.exe", Required = false)]
+        public string ChromeDriverPath { get; set; }
+
         [Usage(ApplicationAlias = "CreepyCrawly.exe")]
         public static IEnumerable<Example> Examples
         {

@@ -12,7 +12,6 @@ EXTRACT_SCRIPT_KEYWORD  :   'EXTRACT_SCRIPT';
 ON_KEYWORD              :   'ON';
 ROOT_KEYWORD            :   'ROOT';
 DO_KEYWORD              :   'DO';
-FOREACH_ELEMENT_KEYWORD :   'FOREACH_ELEMENT';
 FOREACH_CLICK_KEYWORD	:	'FOREACH_CLICK';
 FOREACH_HREF_KEYWORD	:	'FOREACH_HREF';
 SUBMIT_KEYWORD			:	'SUBMIT';
@@ -103,9 +102,6 @@ goto_src_command	:	GOTO_SRC_KEYWORD selector command_block
 goto_click_command	:	GOTO_CLICK_KEYWORD selector command_block
 					;
 
-foreach_element_command :   FOREACH_ELEMENT_KEYWORD selector command_block
-						;
-
 foreach_click_command	:	FOREACH_CLICK_KEYWORD selector command_block
 						;
 
@@ -121,7 +117,7 @@ do_while_click_command	:	command_block WHILE_CLICK_KEYWORD selector SEMICOL
 simple_command  :   (click_command|wait_ms_command|extract_text_command|extract_href_command|extract_all_images_command|extract_title_command|extract_image_command|extract_to_csv_command|input_command|wait_for_command|select_command|submit_command)
                 ;
 
-complex_command :   (foreach_element_command|foreach_click_command|foreach_href_command|goto_src_command|goto_click_command|while_click_command|do_while_click_command)
+complex_command :   (foreach_click_command|foreach_href_command|goto_src_command|goto_click_command|while_click_command|do_while_click_command)
                 ;
 
 command_block   :   DO_KEYWORD LCURLY (simple_command|complex_command)* RCURLY

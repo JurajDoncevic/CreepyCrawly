@@ -33,7 +33,7 @@ namespace CreepyCrawly.SeleniumExecution
             if (!_ExecutionDriver.IsDriverRunning)
             {
                 _ExecutionDriver.StartDriver();
-                IsEngineOk = true;
+                IsEngineOk = _ExecutionDriver.IsDriverRunning;
             }
         }
 

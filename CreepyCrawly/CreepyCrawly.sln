@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.LanguageEngine
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.SeleniumExecution", "CreepyCrawly.SeleniumExecutionEngine\CreepyCrawly.SeleniumExecution.csproj", "{CEA89961-78A3-4B12-89EC-9AC761DD8AB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.ExecutionPlanning", "CreepyCrawly.ExecutionPlanning\CreepyCrawly.ExecutionPlanning.csproj", "{4D1AE20D-B1D1-42DB-84FE-A55967152FB4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.Output", "CreepyCrawly.Output\CreepyCrawly.Output.csproj", "{F6257EF4-ADCB-41FA-A445-2A56F92D1238}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreepyCrawly.Utils", "CreepyCrawly.Utils\CreepyCrawly.Utils.csproj", "{09DBEA65-BC95-438C-8DFC-9EE34AA8EB41}"
@@ -39,10 +37,6 @@ Global
 		{CEA89961-78A3-4B12-89EC-9AC761DD8AB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEA89961-78A3-4B12-89EC-9AC761DD8AB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEA89961-78A3-4B12-89EC-9AC761DD8AB5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D1AE20D-B1D1-42DB-84FE-A55967152FB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D1AE20D-B1D1-42DB-84FE-A55967152FB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D1AE20D-B1D1-42DB-84FE-A55967152FB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D1AE20D-B1D1-42DB-84FE-A55967152FB4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6257EF4-ADCB-41FA-A445-2A56F92D1238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6257EF4-ADCB-41FA-A445-2A56F92D1238}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6257EF4-ADCB-41FA-A445-2A56F92D1238}.Release|Any CPU.ActiveCfg = Release|Any CPU
