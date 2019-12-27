@@ -92,8 +92,9 @@ namespace CreepyCrawly.Core
         /// EXTRACT_TEXT command implementation. Extracts text from an element with given selector.
         /// </summary>
         /// <param name="selector">Selector string</param>
+        /// <param name="regex">Regex to match text with</param>
         /// <returns>String of text</returns>
-        string ExtractText(string selector);
+        string ExtractText(string selector, string regex = null);
         /// <summary>
         /// EXTRACT_TITLE command implementation. Extract the (meta-tag) title from the current page. 
         /// </summary>

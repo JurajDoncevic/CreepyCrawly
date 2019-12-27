@@ -22,9 +22,12 @@ EXTRACT_HREF_KEYWORD    :   'EXTRACT_HREF_KEYWORD';
 GOTO_SRC_KEYWORD		:	'GOTO_SRC';
 GOTO_CLICK_KEYWORD		:	'GOTO_CLICK';
 WHILE_CLICK_KEYWORD		:	'WHILE_CLICK';
+WITH_KEYWORD            :   'WITH';
+REGEX_KEYWORD           :   'REGEX';
 
-TEXT             :   '\''(.)+?'\'';
-POSITIVE_INTEGER :   ([1-9]+[0-9]*|[0]);
+TEXT             :  '\''(.)+?'\'';
+POSITIVE_INTEGER :  ([1-9]+[0-9]*|[0]);
+REGEX            :  'r\''(.)+?'\'';
 
 COMMA		:	',';
 SEMICOL     :   ';';
@@ -48,6 +51,9 @@ selector        : TEXT
 www_url			: TEXT
 				;
 
+regex           : REGEX
+                ;
+
 /* simple commands */
 select_index    : POSITIVE_INTEGER
                 ;
@@ -66,7 +72,7 @@ wait_for_command   :   WAIT_FOR_KEYWORD selector wait_amount SEMICOL
                     ;
 
 /* extract commands */ 
-extract_text_command	:   EXTRACT_TEXT_KEYWORD selector SEMICOL
+extract_text_command	:   EXTRACT_TEXT_KEYWORD selector (WITH_KEYWORD REGEX_KEYWORD regex)? SEMICOL
 						;
 
 extract_image_command	:	EXTRACT_IMAGE_KEYWORD selector SEMICOL

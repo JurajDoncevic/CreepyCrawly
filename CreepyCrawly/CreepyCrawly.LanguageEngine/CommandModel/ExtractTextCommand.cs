@@ -10,12 +10,14 @@ namespace CreepyCrawly.LanguageEngine.CommandModel
     {
         public string Name { get; private set; }
         public string Selector { get; private set; }
-        public Func<string, object> Execution { get; private set; }
+        public string Regex { get; private set; }
+        public Func<string, string, object> Execution { get; private set; }
 
-        public ExtractTextCommand(string selector, Func<string, object> execution)
+        public ExtractTextCommand(string selector, Func<string, string, object> execution, string regex = null)
         {
             Name = "EXTRACT_TEXT";
             Selector = selector;
+            Regex = regex;
             Execution = execution;
         }
 
@@ -23,7 +25,7 @@ namespace CreepyCrawly.LanguageEngine.CommandModel
         {
             try
             {
-                object result = Execution.Invoke(Selector);
+                object result = Execution.Invoke(Selector, Regex);
                 OutputSingleton.WriteToTextOutputters(result);
                 return result;
             }

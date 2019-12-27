@@ -91,10 +91,18 @@ namespace CreepyCrawly.SeleniumExecution
                     .Until(_ => By.CssSelector(selector));
             return null;
         }
-        public string ExtractText(string selector)
+        public string ExtractText(string selector, string regex = null)
         {
             var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
-            return element.Text;
+            string text = element.Text;
+
+            if(regex != null)
+            {
+                text = System.Text.RegularExpressions.Regex.Match(text, regex).Value;
+            }
+                
+
+            return text;
         }
         public string ExtractTitle()
         {

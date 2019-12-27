@@ -98,7 +98,8 @@ namespace CreepyCrawly.LanguageDefinition
         public override void EnterExtract_text_command([NotNull] CrawlLangParser.Extract_text_commandContext context)
         {
             string selector = context.selector().GetText().Trim('\'');
-            ExtractTextCommand extractTextCommand = new ExtractTextCommand(selector, _ExecutionEngine.ExtractText);
+            string regex = context.regex()?.GetText().Trim('r').Trim('\'');
+            ExtractTextCommand extractTextCommand = new ExtractTextCommand(selector, _ExecutionEngine.ExtractText, regex);
             _CurrentBlock.Add(extractTextCommand);
         }
 
