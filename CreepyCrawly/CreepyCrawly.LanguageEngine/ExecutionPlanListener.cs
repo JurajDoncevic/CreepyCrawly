@@ -394,5 +394,57 @@ namespace CreepyCrawly.LanguageDefinition
             _CurrentBlock.Add(whileClickCommand);
 
         }
+
+        public override void EnterForeach_select_command([NotNull] CrawlLangParser.Foreach_select_commandContext context)
+        {
+            _BlockIds.Push(Guid.NewGuid());
+            _CommandBlocks.Add(_CurrentBlockId, new List<ICommand>());
+        }
+
+        public override void ExitForeach_select_command([NotNull] CrawlLangParser.Foreach_select_commandContext context)
+        {
+            string selector = context.selector().GetText().Trim('\'');
+
+            ForEachSelectCommand forEachSelectCommand = new ForEachSelectCommand(_CurrentBlock, selector,
+                                                                                 _ExecutionEngine.ForEachSelect_Head,
+                                                                                 _ExecutionEngine.ForEachSelect_IterationBegin,
+                                                                                 _ExecutionEngine.ForEachSelect_IterationEnd,
+                                                                                 _ExecutionEngine.ForEachSelect_Tail);
+            _BlockIds.Pop();
+            _CurrentBlock.Add(forEachSelectCommand);
+        }
+
+        public override void EnterClick_each_command([NotNull] CrawlLangParser.Click_each_commandContext context)
+        {
+            _BlockIds.Push(Guid.NewGuid());
+            _CommandBlocks.Add(_CurrentBlockId, new List<ICommand>());
+        }
+
+        public override void ExitClick_each_command([NotNull] CrawlLangParser.Click_each_commandContext context)
+        {
+            string selector = context.selector().GetText().Trim('\'');
+
+            ClickEachCommand clickEachCommand = new ClickEachCommand(_CurrentBlock, selector,
+                                                                     _ExecutionEngine.ClickEach_Head,
+                                                                     _ExecutionEngine.ClickEach_IterationBegin,
+                                                                     _ExecutionEngine.ClickEach_IterationEnd,
+                                                                     _ExecutionEngine.ClickEach_Tail);
+            _BlockIds.Pop();
+            _CurrentBlock.Add(clickEachCommand);
+        }
+
+        public override void EnterExtract_all_hrefs_command([NotNull] CrawlLangParser.Extract_all_hrefs_commandContext context)
+        {
+            string selector = context.selector().GetText().Trim('\'');
+
+            ExtractAllHrefsCommand extractAllHrefsCommand = new ExtractAllHrefsCommand(selector, _ExecutionEngine.ExtractAllHrefs);
+
+            _CurrentBlock.Add(extractAllHrefsCommand);
+        }
+
+        public override void ExitExtract_all_hrefs_command([NotNull] CrawlLangParser.Extract_all_hrefs_commandContext context)
+        {
+            
+        }
     }
 }

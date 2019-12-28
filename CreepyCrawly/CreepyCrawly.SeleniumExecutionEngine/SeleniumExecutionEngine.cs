@@ -15,6 +15,8 @@ namespace CreepyCrawly.SeleniumExecution
         private Stack<string> _WindowContextStack = new Stack<string>();
         private Stack<Queue<IWebElement>> _ClickIterationStack = new Stack<Queue<IWebElement>>();
         private Stack<Queue<string>> _HrefIterationStack = new Stack<Queue<string>>();
+        private Stack<int> _SelectIterationStack = new Stack<int>();
+        private Stack<Queue<IWebElement>> _ClickEachIterationStack = new Stack<Queue<IWebElement>>();
         private SeleniumExecutionDriver _ExecutionDriver;
         public bool IsEngineOk { get; private set; } = false;
 
@@ -85,12 +87,14 @@ namespace CreepyCrawly.SeleniumExecution
             System.Threading.Thread.Sleep(waitAmount);
             return null;
         }
+
         public object WaitFor(string selector, int waitAmount)
         {
             new WebDriverWait(_ExecutionDriver.Driver, new TimeSpan(0, 0, 0, 0, waitAmount))
                     .Until(_ => By.CssSelector(selector));
             return null;
         }
+
         public string ExtractText(string selector, string regex = null)
         {
             var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
@@ -104,15 +108,32 @@ namespace CreepyCrawly.SeleniumExecution
 
             return text;
         }
+
         public string ExtractTitle()
         {
             var title = _ExecutionDriver.Driver.Title;
             return title;
         }
+
         public string ExtractHref(string selector)
         {
             var href = _ExecutionDriver.Driver.FindElementByCssSelector(selector).GetAttribute("href");
             return href;
+        }
+
+        public string ExtractAllHrefs(string selector)
+        {
+            IWebElement parentElement = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
+            string hrefCsv = "";
+            if(parentElement != null)
+            {
+                hrefCsv = parentElement.FindElements(By.CssSelector("[href]"))
+                                       .ToList()
+                                       .Select(_=>_.GetAttribute("href"))
+                                       .Aggregate((_1, _2) => _1 + "," + _2);
+            }
+
+            return hrefCsv;
         }
 
         public string[] ExtractAllImages(string selector)
@@ -356,6 +377,60 @@ namespace CreepyCrawly.SeleniumExecution
         }
         #endregion
 
+        #region FOREACH SELECT
+        public object ForEachSelect_Head(string selector)
+        {
+            //if there is no foreach_select command active in the scope, duplicate the context
+            if(_SelectIterationStack.Count == 0)
+            {
+                _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
+                _ExecutionDriver.OpenNewDuplicateTab();
+            }
+
+            SelectElement element = new SelectElement(_ExecutionDriver.Driver.FindElementByCssSelector(selector));
+            int numberOfOptions = element.Options.Count;
+            _SelectIterationStack.Push(numberOfOptions - 1);
+            return null;
+        }
+
+        public object ForEachSelect_IterationBegin(string selector)
+        {
+            int optionIndex;
+            if(_SelectIterationStack.Peek() >= 0 && _SelectIterationStack.TryPop(out optionIndex))
+            {
+                var element = new SelectElement(_ExecutionDriver.Driver.FindElementByCssSelector(selector));
+                element.SelectByIndex(optionIndex);
+
+                optionIndex--;
+                _SelectIterationStack.Push(optionIndex);
+
+                return 1;
+            }
+
+            return null;
+
+        }
+
+        public object ForEachSelect_IterationEnd()
+        {
+            return null;
+        }
+
+        public object ForEachSelect_Tail()
+        {
+            _SelectIterationStack.Pop();
+            //if this was the foreach_select context holder - close the context
+            if (_SelectIterationStack.Count == 0)
+            {
+                string stackedTab = _WindowContextStack.Pop();
+                _ExecutionDriver.CloseCurrentTab();
+                _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
+            }
+
+            return null;
+        }
+        #endregion
+
         #region WHILE CLICK
         public object WhileClick_Head()
         {
@@ -467,6 +542,60 @@ namespace CreepyCrawly.SeleniumExecution
             string stackedTab = _WindowContextStack.Pop();
             _ExecutionDriver.CloseCurrentTab();
             _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
+            return null;
+        }
+        #endregion
+
+        #region CLICK EACH
+        public object ClickEach_Head(string selector)
+        {
+            //if there is no click_each command active in the scope, duplicate the context
+            if (_ClickEachIterationStack.Count == 0)
+            {
+                _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
+                _ExecutionDriver.OpenNewDuplicateTab();
+            }
+
+            _ClickEachIterationStack.Push(new Queue<IWebElement>(_ExecutionDriver.Driver.FindElementsByCssSelector(selector)));
+            
+            return null;
+        }
+
+        public object ClickEach_IterationBegin()
+        {
+            var elementQueue = _ClickEachIterationStack.Pop();
+            IWebElement element = null;
+            elementQueue.TryDequeue(out element);
+
+            _ClickEachIterationStack.Push(elementQueue);
+
+            if (element != null)
+            {
+                element.Click();
+                return 1;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public object ClickEach_IterationEnd()
+        {
+            return null;
+        }
+
+        public object ClickEach_Tail()
+        {
+            _ClickEachIterationStack.Pop();
+            //if this was the click_each context holder - close the context
+            if (_ClickEachIterationStack.Count == 0)
+            {
+                string stackedTab = _WindowContextStack.Pop();
+                _ExecutionDriver.CloseCurrentTab();
+                _ExecutionDriver.SwitchToTabWithHandle(stackedTab);
+            }
+
             return null;
         }
         #endregion

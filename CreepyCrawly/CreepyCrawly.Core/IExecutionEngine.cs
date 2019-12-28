@@ -77,6 +77,12 @@ namespace CreepyCrawly.Core
         /// <returns>Href string</returns>
         string ExtractHref(string selector);
         /// <summary>
+        /// EXTRACT_ALL_HREFS command implementation. Extracts all href link from children of element with given selector
+        /// </summary>
+        /// <param name="selector"></param>
+        /// <returns>CSV of href links</returns>
+        string ExtractAllHrefs(string selector);
+        /// <summary>
         /// EXTRACT_IMAGE command implementation. Extracts an image from an img element with given selector.
         /// </summary>
         /// <param name="selector">Selector string</param>
@@ -182,6 +188,55 @@ namespace CreepyCrawly.Core
         /// </summary>
         /// <returns>null</returns>
         object ForEachHref_Tail();
+        #endregion
+
+        #region FORACH_SELECT
+        /// <summary>
+        /// FOREACH_SELECT Head method. Saves the current context if no context of FOREACH_SELECT type exists and creates a FOREACH_SELECT type context.
+        /// </summary>
+        /// <param name="selector">HTML Select element selector</param>
+        /// <returns>null</returns>
+        public object ForEachSelect_Head(string selector);
+        /// <summary>
+        /// FOREACH_SELECT Iteration begin method. Initiates a new iteration over options of a select element.
+        /// </summary>
+        /// <param name="selector">Selector of Select element</param>
+        /// <returns>1 if there are options left; else returns null</returns>
+        public object ForEachSelect_IterationBegin(string selector);
+        /// <summary>
+        /// FOREACH_SELECT Iteration end. Finishes iteration execution.
+        /// </summary>
+        /// <returns>null</returns>
+        public object ForEachSelect_IterationEnd();
+        /// <summary>
+        /// FOREACH_SELECT Tail method. Recovers saved context if it is the upmost FOREACH_SELECT command.
+        /// </summary>
+        /// <returns>null</returns>
+        public object ForEachSelect_Tail();
+
+        #endregion
+
+        #region CLICK_EACH
+        /// <summary>
+        /// CLICK_EACH command head. Saves the current context if no context of CLICK_EACH type exists and creates a CLICK_EACH type context.
+        /// </summary>
+        /// <param name="selector">Selector string</param>
+        /// <returns>null</returns>
+        object ClickEach_Head(string selector);
+        /// <summary>
+        /// CLICK_EACH command iteration begin. If needed, stores important context and prepares the current context for the next iteration of commands. Clicks on the next element with given selector.
+        /// </summary>
+        /// <returns>1 on success; null on failure</returns>
+        object ClickEach_IterationBegin();
+        /// <summary>
+        /// CLICK_EACH command iteration end. If needed, stores important context and prepares the current context for the next iteration.
+        /// <returns>null</returns>
+        object ClickEach_IterationEnd();
+        /// <summary>
+        /// CLICK_EACH command tail. Finishes execution and reverts to the beginning context.
+        /// </summary>
+        /// <returns>null</returns>
+        object ClickEach_Tail();
         #endregion
 
         #region GOTO_CLICK
