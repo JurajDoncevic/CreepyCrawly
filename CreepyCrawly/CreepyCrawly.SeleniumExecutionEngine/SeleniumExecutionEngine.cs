@@ -534,7 +534,18 @@ namespace CreepyCrawly.SeleniumExecution
         {
             _WindowContextStack.Push(_ExecutionDriver.Driver.CurrentWindowHandle);
             _ExecutionDriver.OpenNewDuplicateTab();
-            _ExecutionDriver.Driver.FindElementByCssSelector(selector).Click();
+            IWebElement element = null;
+            try
+            {
+                element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
+            }
+            catch (Exception)
+            {
+                
+            }
+            
+            element?.Click();
+
             return null;
         }
         public object GotoClick_Tail()
