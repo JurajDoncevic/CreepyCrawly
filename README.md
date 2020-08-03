@@ -17,7 +17,7 @@ CreepyCrawly uses its own scripting language - **CrawlLang**. CrawlLang was crea
 Learn more about CrawlLang [HERE]()
 
 ## Extensible?
-CreepyCrawly was first brainstormed and written in Python with just Selenium as an *execution engine* in mind. A decoupled functional design we used on a team project (to avoid stepping on eachothers toes) allowed it to be used with another execution engine variant. So, the idea to build a tool that could be used with **any** such execution engine emerged. If a more adequate engine than Selenium appears, one can just implement the commands using that new engine.
+CreepyCrawly was first brainstormed and written in Python with just Selenium in mind as the basis of an *execution engine*. A decoupled functional design that was used on a team project (to avoid stepping on eachothers toes) allowed it to be used with another execution engine variant. So, the idea to build a tool that could be used with **any** such execution engine emerged. If a more adequate engine-carrying tool than Selenium appears, one can just implement the commands using that new engine.
 
 All implemented engines can be interchangeable, the user can just select which one to use before running a script.
 
