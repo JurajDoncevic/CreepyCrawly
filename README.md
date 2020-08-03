@@ -12,7 +12,7 @@ CreepyCrawly is built in C# .NET Core 3.1, using Antlr 4 and Selenuim (with chro
 It comes in form of a command line tool and a WPF desktop app. The desktop app is Windows only, sorry :disappointed:.
 
 ## Scripting? In what language?
-CreepyCrawly uses its own scripting language - **CrawlLang**. CrawlLang was built incrementaly as CreepyCrawly was being used and tested over multiple websites (even some really shady ones). If an opportunity or need arises, CrawlLang might get new features as it is easy to maintain and extend.
+CreepyCrawly uses its own scripting language - **CrawlLang**. CrawlLang was created along with CreepyCrawly as it was being used and tested over multiple websites (even some really shady ones). If an opportunity or need arises, CrawlLang might get new features as it is easy to maintain and extend.
 
 Learn more about CrawlLang [HERE]()
 
