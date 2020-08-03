@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CreepyCrawly": {
+      "commandName": "Project",
+      "commandLineArgs": "\"../../../../../test12.cl\" --stdout --result-file \"../../../../../testOutput.txt\" --image-dir \"../../../../../images\""
+    }
+  }
+}

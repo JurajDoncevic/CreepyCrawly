@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CreepyCrawly.ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "./../../../../../\"Test scripts\"/test15.cl --stdout "
+    }
+  }
+}
