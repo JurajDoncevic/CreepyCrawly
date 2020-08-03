@@ -11,14 +11,16 @@ CreepyCrawly is built in C# .NET Core 3.1, using Antlr 4 and Selenuim (with chro
 
 It comes in form of a command line tool and a WPF desktop app. The desktop app is Windows only, sorry :disappointed:.
 
-## Scripting? In what language?
-CreepyCrawly uses its own scripting language - **CrawlLang**. CrawlLang was created along with CreepyCrawly as it was being used and tested over multiple websites (even some really shady ones). If an opportunity or need arises, CrawlLang might get new features as it is easy to maintain and extend.
+For more information check the [Wiki](https://github.com/JurajDoncevic/CreepyCrawly/wiki)!
 
-Learn more about CrawlLang [HERE]()
+## Scripting? In what language?
+CreepyCrawly uses its own scripting language - **CrawlLang**.
+
+Learn more about CrawlLang [HERE](https://github.com/JurajDoncevic/CreepyCrawly/wiki/CrawlLang)
 
 ## Extensible?
-CreepyCrawly was first brainstormed and written in Python with just Selenium in mind as the basis of an *execution engine*. A decoupled functional design that was used on a team project (to avoid stepping on eachothers toes) allowed it to be used with another execution engine variant. So, the idea to build a tool that could be used with **any** such execution engine emerged. If a more adequate engine-carrying tool than Selenium appears, one can just implement the commands using that new engine.
+CreepyCrawly can use other tools as a basis for an execution engine, not just Selenium.
 
 All implemented engines can be interchangeable, the user can just select which one to use before running a script.
 
-Learn more about the design [HERE]()
+Learn more about the design [HERE](https://github.com/JurajDoncevic/CreepyCrawly/wiki/Design-and-architecture)
