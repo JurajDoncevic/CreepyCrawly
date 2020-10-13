@@ -18,6 +18,7 @@ FOREACH_HREF_KEYWORD	:	'FOREACH_HREF';
 EXTRACT_ALL_HREFS_KEYWORD   :   'EXTRACT_ALL_HREFS';
 CLICK_EACH_KEYWORD      :   'CLICK_EACH';
 SUBMIT_KEYWORD			:	'SUBMIT';
+PUT_INNER_HTML_KEYWORD  :   'PUT_INNER_HTML';
 EXTRACT_IMAGE_KEYWORD	:	'EXTRACT_IMAGE';
 EXTRACT_ALL_IMAGES_KEYWORD	:	'EXTRACT_ALL_IMAGES';
 EXTRACT_TO_CSV_KEYWORD	:	'EXTRACT_TO_CSV';
@@ -109,6 +110,9 @@ extract_all_hrefs_command   :   EXTRACT_ALL_HREFS_KEYWORD selector SEMICOL
 input_command   :   INPUT_KEYWORD selector text_value SEMICOL
                 ;
 
+put_inner_html_command  : PUT_INNER_HTML_KEYWORD selector text_value SEMICOL
+                ;
+
 select_command  :   SELECT_KEYWORD selector LANGLE select_index RANGLE SEMICOL
                 ;
 
@@ -160,7 +164,7 @@ partial_command                 : (partial_extract_text_command|partial_extract_
 composite_extract_command   :   EXTRACT_KEYWORD partial_command (COMMA partial_command)* SEMICOL
                             ;
 
-simple_command  :   (click_command|wait_ms_command|extract_text_command|extract_href_command|extract_all_hrefs_command|extract_all_images_command|extract_title_command|extract_image_command|extract_to_csv_command|input_command|wait_for_command|select_command|submit_command|composite_extract_command)
+simple_command  :   (put_inner_html_command|click_command|wait_ms_command|extract_text_command|extract_href_command|extract_all_hrefs_command|extract_all_images_command|extract_title_command|extract_image_command|extract_to_csv_command|input_command|wait_for_command|select_command|submit_command|composite_extract_command)
                 ;
 
 complex_command :   (click_each_command|foreach_select_command|foreach_click_command|foreach_href_command|goto_src_command|goto_click_command|while_click_command|do_while_click_command)

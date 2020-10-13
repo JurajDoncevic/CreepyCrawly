@@ -10,6 +10,7 @@ namespace CreepyCrawly.LanguageEngine
 {
     public abstract class CrawlLangListener : CrawlLangBaseListener
     {
+        public abstract override void EnterPut_inner_html_command([NotNull] CrawlLangParser.Put_inner_html_commandContext context);
         public abstract override void EnterClick_command([NotNull] CrawlLangParser.Click_commandContext context);
         public abstract override void EnterClick_each_command([NotNull] CrawlLangParser.Click_each_commandContext context);
         public abstract override void EnterCommand_block([NotNull] CrawlLangParser.Command_blockContext context);

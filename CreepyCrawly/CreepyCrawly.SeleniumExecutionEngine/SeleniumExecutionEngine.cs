@@ -55,23 +55,33 @@ namespace CreepyCrawly.SeleniumExecution
             _ExecutionDriver.Driver.Navigate().GoToUrl(wwwUrl);
             return null;
         }
+
         public object Click(string selector)
         {
             var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
             element.Click();
             return null;
         }
+
         public object Submit(string selector)
         {
             var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
             element.Submit();
             return null;
         }
+
         public object Input(string selector, string inputValue)
         {
             var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
             element.Clear();
             element.SendKeys(inputValue);
+            return null;
+        }
+
+        public object PutInnerHtml(string selector, string inputValue)
+        {
+            var element = _ExecutionDriver.Driver.FindElementByCssSelector(selector);
+            _ExecutionDriver.Driver.ExecuteScript(string.Format("var ele=arguments[0]; ele.innerHTML = '{0}';", inputValue), element);
             return null;
         }
 

@@ -146,6 +146,15 @@ namespace CreepyCrawly.LanguageDefinition
             _CommandBlocks.Add(_CurrentBlockId, new List<ICommand>());
         }
 
+        public override void EnterPut_inner_html_command([NotNull] CrawlLangParser.Put_inner_html_commandContext context)
+        {
+            string selector = context.selector().GetText().Trim('\'');
+            string value = context.text_value().TEXT().GetText().Trim('\'');
+
+            PutInnerHtmlCommand putInnerHtmlCommand = new PutInnerHtmlCommand(selector, value, _ExecutionEngine.Input);
+            _CurrentBlock.Add(putInnerHtmlCommand);
+        }
+
         public override void EnterInput_command([NotNull] CrawlLangParser.Input_commandContext context)
         {
             string selector = context.selector().GetText().Trim('\'');
